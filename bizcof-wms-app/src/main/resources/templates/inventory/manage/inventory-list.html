@@ -1,0 +1,70 @@
+<!-- /templates/inventory/manage/inventory-list.html -->
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/base}">
+
+<head>
+    <title layout:title-content="재고 관리">재고 관리</title>
+    <link rel="stylesheet" th:href="@{/css/customize.css}">
+</head>
+
+<body>
+<div layout:fragment="title">재고 관리</div>
+<div layout:fragment="breadcrumb">재고 관리 / 재고 조회</div>
+
+<!-- 검색 조건 부분만 오버라이드 -->
+<div layout:fragment="search-body">
+    <div class="row">
+        <div class="col-md-1"><label>옵션</label></div>
+        <div class="col-md-11">
+            <div class="row  mb-3">
+
+                <div class="col-md-3">
+                    <label>품목 코드</label>
+                    <input type="text" class="form-control form-control-sm" id="searchItemCode"
+                           name="searchItemCode" placeholder="품목 코드" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>품목 명</label>
+                    <input type="text" class="form-control form-control-sm" id="searchItemName"
+                           name="searchItemName" placeholder="품목 명" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>거래처 코드</label>
+                    <input type="text" class="form-control form-control-sm" id="searchCustomerCode"
+                           name="searchCustomerCode" placeholder="거래처 코드" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>거래처 명</label>
+                    <input type="text" class="form-control form-control-sm" id="searchCustomerName"
+                           name="searchCustomerName" placeholder="거래처 명" data-search>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="button-right">
+
+</div>
+
+<!-- 그리드 콘텐츠 -->
+<div layout:fragment="content-body">
+    <div class="card card-outline card-info">
+        <div id="inventoryList" style="width: 100%; height: 1050px;"></div>
+    </div>
+
+    <div id="modal-inbound-form-container"></div>
+
+    <div id="modal-customer-search-container"></div>
+    <div id="modal-item-search-container"></div>
+</div>
+
+<div layout:fragment="scripts">
+    <script type="module" src="/js/inventory/manage/inventory-list-grid.js"></script>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+// bizcof settings.gradle
+
+rootProject.name = 'bizcof'
+include ':bizcof-wms-app'
+include ':bizcof-wms-api'
+include ':bizcof-common-core'
+

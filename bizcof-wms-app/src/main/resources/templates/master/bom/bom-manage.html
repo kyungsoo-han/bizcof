@@ -1,0 +1,93 @@
+<!-- /templates/master/bom/bom-manage.html -->
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/base}">
+
+<head>
+    <title layout:title-content="BOM 관리">BOM 관리</title>
+    <link rel="stylesheet" th:href="@{/css/customize.css}">
+</head>
+
+<body>
+<div layout:fragment="title">BOM 관리</div>
+<div layout:fragment="breadcrumb">기준 정보 / BOM 관리</div>
+
+<!-- 검색 조건 부분만 오버라이드 -->
+<div layout:fragment="search-body">
+    <div class="row">
+        <div class="col-md-1"><label>옵션</label></div>
+        <div class="col-md-11">
+            <div class="row  mb-3">
+                <div class="col-md-3">
+                    <label>품목 코드</label>
+                    <input type="text" class="form-control form-control-sm" id="searchItemCode"
+                           name="searchItemCode" placeholder="품목 코드" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>품목 명</label>
+                    <input type="text" class="form-control form-control-sm" id="searchItemName"
+                           name="searchItemName" placeholder="품목 명" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>거래처 코드</label>
+                    <input type="text" class="form-control form-control-sm" id="searchCustomerCode"
+                           name="searchCustomerCode" placeholder="거래처 코드" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>거래처 명</label>
+                    <input type="text" class="form-control form-control-sm" id="searchCustomerName"
+                           name="searchCustomerName" placeholder="거래처 명" data-search>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="button-right">
+
+    <button type="button" class="btn btn-success btn-sm" id="btnSave">
+        <i class="fa fa-floppy-disk mr-1"></i> BOM 저장
+    </button>
+
+</div>
+
+<!-- 그리드 콘텐츠 -->
+<div layout:fragment="content-body">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card card-outline card-info">
+                <div id="itemList" style="width: 100%; height: 1050px;"></div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card card-outline card-info">
+                <div class="card-header py-1 px-2">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-outline-info btn-sm mr-2" id="btnAddChildNode">
+                            <i class="fas fa-plus-circle mr-1"></i> 노드 추가
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" id="btnRemoveChildNode">
+                            <i class="fas fa-minus-circle mr-1"></i> 노드 삭제
+                        </button>
+                    </div>
+                </div>
+
+                <div id="bomList" style="width: 100%; height: 1050px;"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="modal-item-search-container"></div>
+
+</div>
+
+<div layout:fragment="scripts">
+    <script type="module" src="/js/master/bom/bom-manage-grid.js"></script>
+    <script type="module" src="/js/master/bom/bom-manage.js"></script>
+</div>
+
+
+</body>
+</html>

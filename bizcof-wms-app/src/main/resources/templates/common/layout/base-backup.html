@@ -1,0 +1,50 @@
+<!-- /templates/common/layout/base.html -->
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="$CONTENT_TITLE - OOTCHA">기본 제목</title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback}">
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <link rel="stylesheet" th:href="@{/realgrid/css/realgrid-sky-blue.css}" />
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+    <!--<link rel="stylesheet" th:href="@{/realgrid/css/realgrid-sky-blue.css}" layout:fragment="styles"/> 스타일을 개별 페이지에서 대체하고 싶을 경우 layout:fragment="styles" -->
+
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div class="content-wrapper">
+        <!-- 개별 콘텐츠 삽입 -->
+        <section class="content" layout:fragment="content">
+            <!-- 기본 컨텐츠 (optional) -->
+        </section>
+    </div>
+</div>
+
+<!-- 공통 스크립트 -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/realgrid/jszip.min.js"></script>
+<script src="/realgrid/realgrid-lic.js"></script>
+<script src="/realgrid/realgrid.2.8.9.min.js"></script>
+<script src="/realgrid/realgrid-utils.js"></script>
+<script type="module" src="/realgrid/realgrid-helper.js"></script>
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        if (window !== window.parent) {
+            document.body.classList.add("iframe-mode");
+        }
+        if (window.parent) {
+            window.parent.postMessage("iframe-loaded", "*");
+        }
+    });
+</script>
+<!-- 개별 페이지 스크립트 삽입 -->
+<div layout:fragment="scripts"></div>
+</body>
+</html>

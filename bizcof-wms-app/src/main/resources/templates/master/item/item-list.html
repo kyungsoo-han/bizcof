@@ -1,0 +1,97 @@
+<!-- /templates/master/item/item-list.html -->
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/base}">
+
+<head>
+    <title layout:title-content="품목 관리">품목 관리</title>
+    <link rel="stylesheet" th:href="@{/css/customize.css}">
+</head>
+
+<body>
+<div layout:fragment="title">품목 관리</div>
+<div layout:fragment="breadcrumb">기준 정보 / 품목 관리</div>
+
+<!-- 검색 조건 부분만 오버라이드 -->
+<div layout:fragment="search-body">
+    <div class="row">
+        <div class="col-md-1"><label>옵션</label></div>
+        <div class="col-md-11">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label>품목 코드</label>
+                    <input type="text" class="form-control form-control-sm" id="searchItemCode" name="searchItemCode" placeholder="품목 코드" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>품목 명</label>
+                    <input type="text" class="form-control form-control-sm" id="searchItemName" name="searchItemName" placeholder="품목 명" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>품목 타입</label>
+                    <select class="form-control form-control-sm" id="searchItemType" data-search>
+                        <option value="" selected disabled>전체</option>
+                        <option value="P">제품</option>
+                        <option value="H">반제품</option>
+                        <option value="M">자재</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>사용 여부</label>
+                    <select class="form-control form-control-sm" id="searchUseYn" data-search>
+                        <option value="">전체</option>
+                        <option value="Y">사용</option>
+                        <option value="N">미사용</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>거래처 코드</label>
+                    <input type="text" class="form-control form-control-sm" id="searchCustomerCode"
+                           name="searchCustomerCode" placeholder="거래처 코드" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>거래처 명</label>
+                    <input type="text" class="form-control form-control-sm" id="searchCustomerName"
+                           name="searchCustomerName" placeholder="거래처 명" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>바코드</label>
+                    <input type="text" class="form-control form-control-sm" id="searchBarcode" name="searchBarcode"
+                           placeholder="바코드" data-search>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="button-right">
+    <button type="button" class="btn btn-success btn-sm" id="btnItemRegister">
+        <i class="fas fa-floppy-disk mr-1"></i> 품목 등록
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" id="btnItemUpdate">
+        <i class="fas fa-edit mr-1"></i> 품목 수정
+    </button>
+
+</div>
+
+<!-- 그리드 콘텐츠 -->
+<div layout:fragment="content-body">
+    <div class="card card-outline card-info">
+            <div id="itemList" style="width: 100%; height: 650px;"></div>
+    </div>
+
+    <div id="modal-item-container"></div>
+
+    <div id="modal-customer-search-container"></div>
+</div>
+
+<div layout:fragment="scripts">
+    <script type="module" src="/js/master/item/item-grid.js"></script>
+    <script type="module" src="/js/master/item/item-list.js"></script>
+    <script type="module" th:src="@{/js/master/item/item-form-modal.js}"></script>
+</div>
+</body>
+</html>

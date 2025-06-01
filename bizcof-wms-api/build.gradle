@@ -1,0 +1,100 @@
+// bizcof-wms-api build.gradle
+plugins {
+    id 'java-library'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+// 명시적으로 runtimeElements 생성
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+compileJava{
+    options.compilerArgs << "-parameters" // -parameters 관련 오류..
+}
+
+bootJar.enabled = false
+jar.enabled = true
+
+
+group = 'com.bizcof'
+version = '0.0.1-SNAPSHOT'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation project(':bizcof-common-core')
+
+    api 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0' // 스프링 3 이상
+    api 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    api 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    api 'org.springframework.boot:spring-boot-starter-security'
+
+    // JWT 라이브러리
+    api 'io.jsonwebtoken:jjwt-api:0.11.5'
+    api 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    api 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // Redis (Redisson)
+    api 'org.springframework.boot:spring-boot-starter-data-redis'
+    api 'org.redisson:redisson-spring-boot-starter:3.23.5'
+    // Kafka
+    api 'org.springframework.kafka:spring-kafka'
+
+    //queryDSL 설정
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    // querydsl JPAAnnotationProcessor 사용 지정, boot v3 이상은 :jakarta, v2이하는 :jpa
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    // java.lang.NoClassDefFoundError (javax.annotation.Generated) 대응 코드
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    // java.lang.NoClassDefFoundError (javax.annotation.Entity) 대응 코드
+
+
+    // 단위 테스트용 JUnit5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    // 목(mock) 객체 생성용 라이브러리
+    testImplementation 'org.mockito:mockito-core:5.12.0'
+    // 가독성 좋은 Assertion (예: assertThat)
+    testImplementation 'org.assertj:assertj-core:3.25.3'
+    // Mockito와 JUnit5 통합 (MockitoExtension 사용 시 필요)
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
+    // Spring Boot 테스트 기능 전반 (예: @WebMvcTest, @MockBean 등 포함)
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation project(":bizcof-wms-app") // Application 클래스 접근 위해
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+
+
+
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// querydsl 설정부
+def generated = 'src/main/generated'
+
+// querydsl QClass 파일 생성 위치를 지정
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+// java source set에 querydsl QClass 위치 추가
+sourceSets {
+    main.java.srcDirs += [ generated ]
+}
+
+// gradle clean 시에 QClass 디렉토리 삭제
+clean {
+    delete file(generated)
+}

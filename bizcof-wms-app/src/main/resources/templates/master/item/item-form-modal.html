@@ -1,0 +1,228 @@
+<!-- /templates/master/item/item-form-modal.html -->
+
+<div class="modal fade small" id="itemModal" tabindex="-1" role="dialog" th:fragment="modal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <!-- 모달 헤더 -->
+            <div class="modal-header">
+                <h6 class="modal-title">품목 등록</h6>
+            </div>
+
+            <!-- 모달 바디 -->
+            <div class="modal-body">
+                <form id="itemForm" class="needs-validation" novalidate>
+                    <div class="container-fluid">
+
+                        <!-- 1행 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="code">품목 코드</label>
+                                    <input type="text" class="form-control form-control-sm" name="code" id="code"
+                                           required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="name">품목 명</label>
+                                    <input type="text" class="form-control form-control-sm" name="name" id="name"
+                                           required autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2행 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="sname">약칭</label>
+                                    <input type="text" class="form-control form-control-sm" name="sname" id="sname"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="ename">영문명</label>
+                                    <input type="text" class="form-control form-control-sm" name="ename" id="ename"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3행 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="type">타입</label>
+                                    <input type="text" class="form-control form-control-sm" name="type" id="type"
+                                           required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="spec">규격</label>
+                                    <input type="text" class="form-control form-control-sm" name="spec" id="spec"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4행 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="customerName">거래처</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm" id="customerName"
+                                               readonly required>
+                                        <input type="hidden" name="customerId" id="customerId">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary btn-sm" type="button"
+                                                    id="btnModalCustomerSearch"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="useYn">사용 여부</label>
+                                    <select class="form-control form-control-sm" name="useYn" id="useYn">
+                                        <option value="Y">사용</option>
+                                        <option value="N">미사용</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="skuUnitCode">SKU 단위</label>
+                                    <select class="form-control form-control-sm" name="skuUnitCode" id="skuUnitCode">
+                                        <option value="EA">EA</option>
+                                        <option value="CASE">CASE</option>
+                                        <option value="BOX">BOX</option>
+                                        <option value="PALLET">PALLET</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="inventoryUnitCode">IU 단위</label>
+                                    <select class="form-control form-control-sm" name="inventoryUnitCode" id="inventoryUnitCode">
+                                        <option value="EA">EA</option>
+                                        <option value="CASE">CASE</option>
+                                        <option value="BOX">BOX</option>
+                                        <option value="PALLET">PALLET</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="skuPerIuQty">SKU당 IU수량</label>
+                                    <input type="number" class="form-control form-control-sm" name="skuPerIuQty"
+                                           id="skuPerIuQty" required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mb-2">
+                                    <label for="boxPerSkuQty">BOX당 수량</label>
+                                    <input type="number" class="form-control form-control-sm" name="boxPerSkuQty"
+                                           id="boxPerSkuQty" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mb-2">
+                                    <label for="pltPerSkuQty">PLT당 수량</label>
+                                    <input type="number" class="form-control form-control-sm" name="pltPerSkuQty"
+                                           id="pltPerSkuQty" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5행 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="price">단가</label>
+                                    <input type="number" class="form-control form-control-sm" name="price" id="price"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="barcode">바코드</label>
+                                    <input type="text" class="form-control form-control-sm" name="barcode" id="barcode"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6행 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="width">가로</label>
+                                    <input type="number" class="form-control form-control-sm" name="width" id="width"
+                                           step="any" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="height">세로</label>
+                                    <input type="number" class="form-control form-control-sm" name="height" id="height"
+                                           step="any" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 7행 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="depth">깊이</label>
+                                    <input type="number" class="form-control form-control-sm" name="depth" id="depth"
+                                           step="any" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="weight">무게</label>
+                                    <input type="number" class="form-control form-control-sm" name="weight" id="weight"
+                                           step="any" autocomplete="off">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- 9행: 설명/메모 -->
+                        <div class="form-group mb-2">
+                            <label for="description">설명</label>
+                            <textarea class="form-control form-control-sm" name="description"
+                                      id="description"></textarea>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="memo">메모</label>
+                            <textarea class="form-control form-control-sm" name="memo" id="memo"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <!-- 모달 푸터 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="btnSaveItem" form="itemForm">저장</button>
+                <button type="button" class="btn btn-secondary" id="btnModalClose" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>

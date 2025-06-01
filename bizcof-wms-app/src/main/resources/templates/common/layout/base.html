@@ -1,0 +1,146 @@
+<!-- /templates/common/layout/base.html -->
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="$CONTENT_TITLE - BIZCOF">기본 제목</title>
+
+    <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback}">
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <link rel="stylesheet" th:href="@{/realgrid/css/realgrid-sky-blue.css}">
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
+
+
+    <style>
+      html:not(.iframe-mode), body:not(.iframe-mode) {
+        height: auto !important;
+        min-height: 100vh;
+      }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div class="content-wrapper">
+
+        <!-- 공통 헤더 -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-1">
+                    <div class="col-sm-6">
+                        <h5 layout:fragment="title">제목 없음</h5>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item" layout:fragment="breadcrumb">화면명</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 본문 -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- 검색 카드 -->
+                <div class="card card-outline card-info" layout:fragment="search-header">
+                    <div class="card-header">
+                        <h3 class="card-title">검색</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body small" layout:fragment="search-body"></div>
+                    <div class="card-footer p-1 pl-2">
+                        <button type="button" id="btnSearch" class="btn-sm btn-info">
+                            <i class="fas fa-search"></i> 검색
+                        </button>
+                        <!--<button type="reset" class="btn-sm btn-secondary">
+                            <i class="fas fa-sync-alt"></i> 초기화
+                        </button>-->
+                        <div class="float-right px-1" layout:fragment="button-right"></div>
+                    </div>
+                </div>
+
+                <!-- 콘텐츠 영역 -->
+                <div layout:fragment="content-body"></div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- ✅ 메시지 모달 -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md-1" role="document">
+    <div class="modal-content">
+      <div class="modal-header p-2 bg-white border-bottom-0" id="messageModalHeader">
+        <div class="d-flex align-items-center">
+          <i class="fas" id="messageModalIcon" style="margin-right: 6px;"></i>
+          <small class="" id="messageModalTitle" style="font-size: medium">알림</small>
+        </div>
+      </div>
+      <div class="modal-body p-2" id="messageModalBody">메시지 내용</div>
+      <div class="modal-footer p-1 border-top-0">
+        <button type="button" class="btn btn-default btn-sm" id="messageModalConfirm">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ 확인 모달 (confirm 포함) -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md-1" role="document">
+    <div class="modal-content">
+      <div class="modal-header p-2 bg-white border-bottom-0">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-question-circle fa-lg text-primary" style="margin-right: 6px;"></i>
+          <small class="" style="font-size: large">확인</small>
+        </div>
+      </div>
+      <div class="modal-body p-2" id="confirmModalMessage">정말로 수행하시겠습니까?</div>
+      <div class="modal-footer p-1 border-top-0">
+        <button type="button" class="btn btn-secondary btn-sm" id="confirmModalCancel" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-default btn-sm" id="confirmModalYes">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- 공통 스크립트 -->
+<link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" />
+<script src="/plugins/jquery/jquery.min.js"></script>           <!-- 1. jQuery -->
+<script src="/plugins/moment/moment-with-locales.min.js"></script> <!--  2. locale 포함된 버전 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> <!-- 3. Bootstrap -->
+<script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script> <!-- 4. Tempus Dominus -->
+<script src="/plugins/daterangepicker/daterangepicker.js"></script>
+
+<script src="/dist/js/adminlte.min.js"></script>
+<script src="/realgrid/jszip.min.js"></script>
+<script src="/realgrid/realgrid-lic.js"></script>
+<script src="/realgrid/realgrid.2.8.9.min.js"></script>
+<script type="module" src="/realgrid/realgrid-utils.js"></script>
+<script type="module" src="/realgrid/realgrid-helper.js"></script>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        if (window !== window.parent) {
+            document.body.classList.add("iframe-mode");
+        }
+        if (window.parent) {
+            window.parent.postMessage("iframe-loaded", "*");
+        }
+    });
+
+</script>
+
+<!-- 추가 스크립트 삽입 -->
+<div layout:fragment="scripts"></div>
+</body>
+</html>

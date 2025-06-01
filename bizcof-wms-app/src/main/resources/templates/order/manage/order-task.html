@@ -1,0 +1,96 @@
+<!-- /templates/order/manage/order-task.html -->
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/base}">
+
+<head>
+    <title layout:title-content="주문 작업">주문 작업</title>
+    <link rel="stylesheet" th:href="@{/css/customize.css}">
+</head>
+
+<body>
+<div layout:fragment="title">주문 작업</div>
+<div layout:fragment="breadcrumb">주문 관리 / 주문 작업</div>
+
+<!-- 검색 조건 부분만 오버라이드 -->
+<div layout:fragment="search-body">
+    <div class="row">
+        <div class="col-md-1"><label>옵션</label></div>
+        <div class="col-md-11">
+            <div class="row  mb-3">
+
+                <div class="col-md-3">
+                    <label class="required" for="searchorderDate">주문 일자</label>
+                    <div class="input-group date" id="searchorderDate">
+                        <input type="text"
+                               class="form-control form-control-sm"
+                               id="searchDateRange"
+                               name="searchDateRange"
+                               placeholder="날짜 범위 선택" autocomplete="off" required data-search/>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label>주문 번호</label>
+                    <input type="text" class="form-control form-control-sm" id="searchorderNo" name="searchorderNo"
+                           placeholder="주문 번호" data-search>
+                </div>
+
+                <div class="col-md-3">
+                    <label>거래처 코드</label>
+                    <input type="text" class="form-control form-control-sm" id="searchCustomerCode"
+                           name="searchCustomerCode" placeholder="거래처 코드" data-search>
+                </div>
+                <div class="col-md-3">
+                    <label>거래처 명</label>
+                    <input type="text" class="form-control form-control-sm" id="searchCustomerName"
+                           name="searchCustomerName" placeholder="거래처 명" data-search>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="button-right">
+    <button type="button" class="btn btn-success btn-sm" id="btnOrderRegister">
+        <i class="fas fa-floppy-disk mr-1"></i> 주문 등록
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" id="btnOrderUpdate">
+        <i class="fas fa-edit mr-1"></i> 주문 수정
+    </button>
+    <button type="button" class="btn btn-dark btn-sm" id="btnOrderConfirm">
+        <i class="fas fa-trash-alt mr-1"></i> 주문 확정
+    </button>
+    <button type="button" class="btn btn-danger btn-sm" id="btnOrderDelete">
+        <i class="fas fa-trash-alt mr-1"></i> 주문 삭제
+    </button>
+</div>
+
+<!-- 그리드 콘텐츠 -->
+<div layout:fragment="content-body">
+    <div class="card card-outline card-info">
+        <div id="orderList" style="width: 100%; height: 850px;"></div>
+    </div>
+
+    <div class="card card-outline card-info">
+        <div id="orderDetailList" style="width: 100%; height: 300px;"></div>
+    </div>
+    <div id="modal-order-form-container"></div>
+
+    <div id="modal-customer-search-container"></div>
+    <div id="modal-item-search-container"></div>
+</div>
+
+<div layout:fragment="scripts">
+    <script type="module" src="/js/order/manage/order-task-grid.js"></script>
+    <script type="module" src="/js/order/manage/order-task.js"></script>
+    <script type="module" th:src="@{/js/order/manage/order-form-modal.js}"></script>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+image: gradle:latest
+
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE == "web"'
+      when: always
+    - when: never
+
+stages:
+  - build
+  - deploy
+
+variables:
+  GITLAB_USER: "hanks"
+  GITLAB_TOKEN: "glpat-2g9o3m_iV8XDFvumxXjx"
+
+before_script:
+  - git config --global credential.helper store
+  - git remote set-url origin "http://$GITLAB_USER:$GITLAB_TOKEN@39.117.246.63:8081/bizcof/bizcof.git"
+  - export JAVA_HOME=/opt/temurin17/jdk-17
+  - export ORG_GRADLE_JAVA_HOME=$JAVA_HOME
+  - export PATH=$JAVA_HOME/bin:$PATH
+  - java -version
+  - javac -version
+# 공통 빌드 스텝 정의 (템플릿)
+.build-package-template:
+  script:
+    - cd $MODULE_DIR
+    - pwd
+    - rm -f build/libs/*.jar
+    - ./gradlew -version
+    - ../gradlew clean build -x test
+    - echo "빌드 결과:"
+    - ls -la build/libs
+  artifacts:
+    paths:
+      - $MODULE_DIR/build/libs/*.jar
+
+# 공통 배포 스텝 정의 (템플릿)
+.deploy-to-server-template:
+  script:
+    # 현재 디렉토리 출력
+    - pwd
+    - ls -al
+    # MODULE_DIR로 이동
+    - cd $MODULE_DIR || { echo "MODULE_DIR 경로로 이동할 수 없습니다. 경로가 정확한지 확인하세요."; exit 1; }
+    - export SERVER_IP="$TARGET_SERVER_IP"
+    #- export SERVER_USER="hanks"
+    - export SERVER_USER="root"  # root 계정으로 설정
+    - export DEST="$SERVER_USER@$SERVER_IP"
+    - pwd
+    - export JAR_PATH=$(find build/libs -name "$MODULE_NAME-*.jar")
+    # JAR 파일이 존재하는지 확인하고 없을 경우 오류 메시지 출력
+    - if [ -z "$JAR_PATH" ]; then echo "JAR 파일을 찾을 수 없습니다. 빌드 결과를 확인하세요."; exit 1; fi
+    # 원격 서버에 경로가 없으면 생성
+    - ssh -o StrictHostKeyChecking=no -i /home/gitlab-runner/.ssh/id_rsa $DEST "mkdir -p /app/servers/$MODULE_NAME || echo '디렉토리 생성 실패'"
+    # JAR 파일 전송
+    - scp -o StrictHostKeyChecking=no -i /home/gitlab-runner/.ssh/id_rsa $JAR_PATH $DEST:/app/servers/$MODULE_NAME || { echo "파일 전송 중 오류가 발생했습니다."; exit 1; }
+    ## 원격 서버에서 배포 스크립트 실행
+    #- ssh -o StrictHostKeyChecking=no -i /home/gitlab-runner/.ssh/id_rsa $DEST "bash /app/$MODULE_NAME/deploy.sh" || { echo "배포 스크립트 실행 중 오류가 발생했습니다."; exit 1; }
+    # 원격 서버에서 서비스 재시작
+    - ssh -o StrictHostKeyChecking=no -i /home/gitlab-runner/.ssh/id_rsa $DEST "sudo systemctl restart $MODULE_NAME.service" || { echo "서비스 재시작 중 오류가 발생했습니다."; exit 1; }
+    # 서비스 상태 확인
+    - ssh -o StrictHostKeyChecking=no -i /home/gitlab-runner/.ssh/id_rsa $DEST "sudo systemctl status $MODULE_NAME.service" || { echo "서비스 상태 확인 중 오류가 발생했습니다."; exit 1; }
+  dependencies:
+    - build-$MODULE_NAME
+
+# ONE API 빌드 및 배포 설정
+build-bizcof-wms-app:
+  stage: build
+  variables:
+    MODULE_NAME: "bizcof-wms-app"
+    MODULE_DIR: "bizcof-wms-app"
+  extends: .build-package-template
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+      when: manual
+    - when: never
+
+deploy-bizcof-wms-app:
+  stage: deploy
+  variables:
+    MODULE_NAME: "bizcof-wms-app"
+    MODULE_DIR: "bizcof-wms-app"
+    TARGET_SERVER_IP: "192.168.0.13"
+  extends: .deploy-to-server-template
+  dependencies:
+    - build-bizcof-wms-app
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+      when: manual
+    - when: never

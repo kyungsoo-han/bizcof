@@ -1,0 +1,42 @@
+// bizcof-wms-app build.gradle
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+bootJar.enabled = true
+jar.enabled = true
+
+group = 'com.bizcof'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+jar {
+    archiveBaseName = 'bizcof-wms-app'
+    archiveVersion = '1.0.0' // 필요 시 버전도 지정할 수 있습니다.
+    archiveClassifier = '' // 필요에 따라 분류자도 설정할 수 있습니다.
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation project(':bizcof-wms-api')
+
+
+//    // 단위 테스트용 JUnit5
+//    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+//    // 목(mock) 객체 생성용 라이브러리
+//    testImplementation 'org.mockito:mockito-core:5.12.0'
+//    // 가독성 좋은 Assertion (예: assertThat)
+//    testImplementation 'org.assertj:assertj-core:3.25.3'
+//    // Mockito와 JUnit5 통합 (MockitoExtension 사용 시 필요)
+//    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
+    // Spring Boot 테스트 기능 전반 (예: @WebMvcTest, @MockBean 등 포함)
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

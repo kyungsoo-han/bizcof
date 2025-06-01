@@ -1,0 +1,169 @@
+<!-- 주문 등록 모달 -->
+<div class="modal fade small" id="orderMngModal" tabindex="-1" role="dialog" th:fragment="modal">
+    <div class="modal-dialog modal-xxl" role="document">
+        <div class="modal-content">
+            <!-- 모달 헤더 -->
+            <div class="modal-header p-2">
+                <h5 class="modal-title">주문 등록</h5>
+            </div>
+
+            <!-- 모달 바디 -->
+            <div class="modal-body pl-2 pr-2 pb-0">
+                <form id="orderForm" class="needs-validation" novalidate>
+                    <div class="container-fluid">
+                        <!-- 1행: 주문번호 + 주문일자 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="orderNo">주문 번호</label>
+                                    <input type="text" class="form-control form-control-sm" name="orderNo" id="orderNo" readonly autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="orderDate">주문 일자</label>
+                                    <div class="input-group date" id="orderDateDiv" data-target-input="nearest">
+                                        <input type="text" id="orderDate" name="orderDate" class="form-control form-control-sm datetimepicker-input" data-target="#orderDate" required/>
+                                        <div class="input-group-append" data-target="#orderDate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2행: 배송일자 + 요청 납기일 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="deliveryDate">배송 일자</label>
+                                    <div class="input-group date" id="deliveryDateDiv" data-target-input="nearest">
+                                        <input type="text" id="deliveryDate" name="deliveryDate" class="form-control form-control-sm datetimepicker-input" data-target="#deliveryDate" required/>
+                                        <div class="input-group-append" data-target="#deliveryDate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="dueDate">요청 납기일</label>
+                                    <div class="input-group date" id="dueDateDiv" data-target-input="nearest">
+                                        <input type="text" id="dueDate" name="dueDate" class="form-control form-control-sm datetimepicker-input" data-target="#dueDate"/>
+                                        <div class="input-group-append" data-target="#dueDate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3행: 거래처 + 고객명 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="" for="customerName">거래처</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm"
+                                               id="customerName"
+                                               readonly >
+                                        <input type="hidden" name="customerId" id="customerId">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary btn-sm" type="button"
+                                                    id="btnModalCustomerSearch"><i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="customerName2">고객 이름</label>
+                                    <input type="text" class="form-control form-control-sm" name="customerName2" id="customerName2" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4행: 배송지 ID + 배송지 주소 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="" for="deliveryName">배송지</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm"
+                                               id="deliveryName"
+                                               readonly >
+                                        <input type="hidden" name="deliveryId" id="deliveryId">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary btn-sm" type="button"
+                                                    id="btnModalDeliverySearch"><i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="required" for="deliveryAddress">배송지 주소</label>
+                                    <input type="text" class="form-control form-control-sm" name="deliveryAddress" id="deliveryAddress" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5행: 연락처 -->
+                        <div class="form-group mb-2">
+                            <label for="phoneNbr">연락처</label>
+                            <input type="text" class="form-control form-control-sm" name="phoneNbr" id="phoneNbr" placeholder="010-xxxx-xxxx">
+                        </div>
+
+                        <!-- 6행: 고객요청사항 + 메모 -->
+
+                        <div class="form-group mb-3">
+                            <label for="customerMemo">고객 요청사항</label>
+                            <textarea class="form-control form-control-sm" name="customerMemo" id="customerMemo" rows="2"></textarea>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label for="memo">메모</label>
+                            <textarea class="form-control form-control-sm" name="memo" id="memo" rows="2"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+
+                <!-- 상세 품목 영역 -->
+                <div class="container-fluid">
+                    <div class="card mb-3">
+                        <div class="card-header bg-gray-light py-2 px-3 font-weight-bold">
+                            상세 정보
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="orderFormModalGrid" style="width: 100%; height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 모달 푸터 -->
+            <div class="modal-footer justify-content-between px-3 py-2">
+                <div>
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="btnAddItemSearch">
+                        <i class="fas fa-plus-circle mr-1"></i> 품목 추가
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" id="btnRemoveItem">
+                        <i class="fas fa-minus-circle mr-1"></i> 품목 제거
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-success btn-sm" id="btnSaveOrder" form="orderForm">
+                        <i class="fas fa-save mr-1"></i> 저장
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnModalClose" data-dismiss="modal">
+                        <i class="fas fa-times mr-1"></i> 닫기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

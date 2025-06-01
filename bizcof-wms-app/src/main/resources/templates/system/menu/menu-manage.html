@@ -1,0 +1,134 @@
+<!-- /templates/system/menu/menu-manage.html -->
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/base}">
+
+<head>
+    <title layout:title-content="메뉴 관리">메뉴 관리</title>
+    <link rel="stylesheet" th:href="@{/css/customize.css}">
+</head>
+
+<body>
+<div layout:fragment="title">메뉴 관리</div>
+<div layout:fragment="breadcrumb">시스템 정보 / 메뉴 관리</div>
+
+<div layout:fragment="search-header" style="display: none;">
+
+</div>
+
+<div layout:fragment="content-body">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card card-outline card-info">
+          <div class="card-header">
+            <h3 class="card-title">메뉴 트리</h3>
+          </div>
+          <div class="card-body p-2">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column"
+                    data-widget="treeview"
+                    role="menu"
+                    data-accordion="false"
+                    id="menuTree">
+                <!-- 트리 메뉴 항목이 여기에 동적으로 들어감 -->
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="card card-outline card-info">
+          <div class="card-header">
+            <h3 class="card-title">메뉴 상세 영역</h3>
+          </div>
+          <div class="card-body">
+              <form id="menuForm">
+                <div class="form-group row">
+                  <label for="menuCd" class="col-sm-2 col-form-label required" >메뉴 코드</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="menuCd" name="menu_cd" placeholder="예: MST_0001" required>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="menuNm" class="col-sm-2 col-form-label required">메뉴 명</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="menuNm" name="menu_nm" placeholder="예: 품목 관리" required>
+                  </div>
+                </div>
+
+
+                  <div class="form-group row">
+                    <label for="parentYn" class="col-sm-2 col-form-label required">사용 여부</label>
+                    <div class="col-sm-10">
+                      <select class="form-control form-control-sm" id="useYn" name="use_yn" required>
+                        <option value="Y">사용</option>
+                        <option value="N">중지</option>
+                      </select>
+                    </div>
+                  </div>
+                <div class="form-group row">
+                  <label for="menuLocation" class="col-sm-2 col-form-label">URL</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="menuLocation" name="menu_location" placeholder="예: /view/master/item/list">
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <label for="parentYn" class="col-sm-2 col-form-label">하위 존재 여부</label>
+                  <div class="col-sm-10">
+                    <select class="form-control form-control-sm" id="parentYn" name="parent_yn">
+                      <option value="Y">하위 있음</option>
+                      <option value="N">하위 없음</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="level" class="col-sm-2 col-form-label required">메뉴 레벨</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control form-control-sm" id="level" name="level" min="1" max="10" value="1" required>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="icon" class="col-sm-2 col-form-label">아이콘</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="icon" name="icon" placeholder="예: fas fa-box">
+                  </div>
+                </div>
+
+                  <div class="form-group row">
+                    <label for="parentCd" class="col-sm-2 col-form-label">상위 메뉴</label>
+                    <div class="col-sm-10">
+
+                        <input type="text" class="form-control form-control-sm" id="parentCd" name="parent_cd" placeholder="" >
+                    </div>
+                  </div>
+                <div class="text-right">
+                    <button type="button" class="btn-sm btn-info" id="btnMenuRegister" >
+                          <i class="fas fa-plus"></i> 신규 등록
+                      </button>
+                    <button type="button" class="btn-sm btn-info" id="btnMenuUpdate" >
+                          <i class="fas fa-plus"></i> 수정
+                      </button>
+                    <button type="button" class="btn-sm btn-secondary" id="btnNewMenuRegister" >
+                        <i class="fas fa-sync-alt"></i> 초기화
+                    </button>
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div layout:fragment="scripts">
+    <script src="/js/system/menu/menu-manage.js" type="module"></script>
+</div>
+
+</body>
+</html>
