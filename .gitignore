@@ -38,6 +38,7 @@ out/
 
 #application.yml
 
+logs
 
 ###Querydsl
 /**/src/main/generated/

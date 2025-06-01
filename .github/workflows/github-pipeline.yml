@@ -22,7 +22,7 @@ on:
 env:
   JAVA_VERSION: '17'                            # 사용할 Java 버전
   JAVA_DISTRIBUTION: 'temurin'                 # Temurin JDK 사용
-  TARGET_SERVER_IP_DEV: 192.168.0.13           # dev 환경 대상 서버 IP
+  TARGET_SERVER_IP_DEV: 39.117.246.63           # dev 환경 대상 서버 IP
   TARGET_SERVER_IP_PROD: 192.168.0.14          # prod 환경 대상 서버 IP
   REMOTE_USER: root                            # 배포할 서버 사용자
 
