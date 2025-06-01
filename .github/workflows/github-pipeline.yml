@@ -1,13 +1,12 @@
-# GitHub Actions: Build and Deploy for Multi-Module Spring Boot Project
+# 📦 GitHub Actions Workflow: Build and Deploy with Manual or Auto Trigger
 
 name: Build and Deploy
 
-# 트리거 조건 정의
 on:
   push:
     branches:
-      - master     # ✅ master 브랜치에 push 시 자동 실행
-      - develop    # ✅ develop 브랜치에 push 시 자동 실행 (필요시 제거 가능)
+      - master
+      - develop
   workflow_dispatch:
     inputs:
       environment:
@@ -19,81 +18,84 @@ on:
         required: true
         default: 'bizcof-wms-app'
 
-# 공통 환경 변수 설정
+# 전역 환경 변수
 env:
-  JAVA_VERSION: '17'
-  JAVA_DISTRIBUTION: 'temurin'
-  TARGET_SERVER_IP_DEV: 192.168.0.13        # 개발 서버 IP
-  TARGET_SERVER_IP_PROD: 192.168.0.14       # 운영 서버 IP
-  REMOTE_USER: root                         # 배포에 사용할 SSH 계정
+  JAVA_VERSION: '17'                            # 사용할 Java 버전
+  JAVA_DISTRIBUTION: 'temurin'                 # Temurin JDK 사용
+  TARGET_SERVER_IP_DEV: 192.168.0.13           # dev 환경 대상 서버 IP
+  TARGET_SERVER_IP_PROD: 192.168.0.14          # prod 환경 대상 서버 IP
+  REMOTE_USER: root                            # 배포할 서버 사용자
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # master 또는 develop 브랜치 push, 혹은 수동 실행 시에만 실행
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || github.event_name == 'workflow_dispatch'
     env:
       MODULE_NAME: ${{ github.event.inputs.module || 'bizcof-wms-app' }}
     steps:
-      - uses: actions/checkout@v3  # 소스코드 체크아웃
+      - uses: actions/checkout@v3                  # GitHub 저장소 코드 체크아웃
 
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}  # Temurin 배포판 사용
-          java-version: ${{ env.JAVA_VERSION }}        # Java 17 버전 설정
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          java-version: ${{ env.JAVA_VERSION }}
 
       - name: Build the module
         run: |
-          # Gradle로 해당 모듈 빌드 (멀티 모듈 프로젝트 기준)
           ./gradlew :${MODULE_NAME}:clean :${MODULE_NAME}:build -x test
-          # 빌드된 JAR 파일 출력 확인
           ls -la ${MODULE_NAME}/build/libs
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.MODULE_NAME }}-jar  # 아티팩트 이름
-          path: ${{ env.MODULE_NAME }}/build/libs/*.jar  # 빌드 결과 JAR 파일 경로
+          name: ${{ env.MODULE_NAME }}-jar
+          path: ${{ env.MODULE_NAME }}/build/libs/*.jar
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # build job이 성공해야 deploy 실행
+    needs: build
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || github.event_name == 'workflow_dispatch'
     env:
       MODULE_NAME: ${{ github.event.inputs.module || 'bizcof-wms-app' }}
       ENV_PROFILE: ${{ github.event.inputs.environment || 'dev' }}
     steps:
-      - uses: actions/checkout@v3  # 코드 체크아웃 (옵션에 따라 SSH 키 사용 가능)
+      - uses: actions/checkout@v3
 
       - name: Download built artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.MODULE_NAME }}-jar  # 빌드 Job에서 업로드한 아티팩트 이름
+          name: ${{ env.MODULE_NAME }}-jar
+          path: ./artifact                    # 다운로드 위치 지정
+
+      - name: Set JAR path
+        run: |
+          JAR_PATH=$(find ./artifact -name "${MODULE_NAME}-*.jar" | head -n 1)
+          if [ -z "$JAR_PATH" ]; then echo "JAR not found!"; exit 1; fi
+          echo "JAR_PATH=$JAR_PATH" >> $GITHUB_ENV
+
+      - name: Determine server IP by profile
+        run: |
+          if [[ "$ENV_PROFILE" == "prod" ]]; then
+            echo "SERVER_IP=$TARGET_SERVER_IP_PROD" >> $GITHUB_ENV
+          else
+            echo "SERVER_IP=$TARGET_SERVER_IP_DEV" >> $GITHUB_ENV
+          fi
 
       - name: Deploy to Remote Server via SCP and SSH
         env:
-          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}   # GitHub Secrets에 등록된 개인 키
-          SERVER_IP: ${{ env.ENV_PROFILE == 'prod' && env.TARGET_SERVER_IP_PROD || env.TARGET_SERVER_IP_DEV }}
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          # 개인키 파일 저장 및 권한 설정
           echo "$PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
 
-          # 다운로드된 아티팩트 디렉토리 내에서 JAR 파일 탐색
-          JAR_PATH=$(find ./${MODULE_NAME}-jar -name "${MODULE_NAME}-*.jar" | head -n 1)
-          if [ -z "$JAR_PATH" ]; then
-            echo "JAR not found!"; exit 1;
-          fi
-
-          # 서버에 배포 디렉토리 생성
+          # 원격 서버 경로 생성 및 JAR 파일 전송
           ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$SERVER_IP \
             "mkdir -p /app/servers/${MODULE_NAME}"
 
-          # JAR 파일 원격 서버로 전송
           scp -o StrictHostKeyChecking=no -i private_key.pem "$JAR_PATH" $REMOTE_USER@$SERVER_IP:/app/servers/${MODULE_NAME}/
 
-          # 서비스 재시작 및 상태 확인
+          # 시스템 서비스 재시작 및 상태 확인
           ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$SERVER_IP \
             "sudo systemctl restart ${MODULE_NAME}.service"
 
