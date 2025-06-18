@@ -19,34 +19,7 @@
         <div class="col-md-1"><label>옵션</label></div>
         <div class="col-md-11">
             <div class="row mb-3">
-                <div class="col-md-3">
-                    <label>품목 코드</label>
-                    <input type="text" class="form-control form-control-sm" id="searchItemCode" name="searchItemCode" placeholder="품목 코드" data-search>
-                </div>
-                <div class="col-md-3">
-                    <label>품목 명</label>
-                    <input type="text" class="form-control form-control-sm" id="searchItemName" name="searchItemName" placeholder="품목 명" data-search>
-                </div>
-                <div class="col-md-3">
-                    <label>품목 타입</label>
-                    <select class="form-control form-control-sm" id="searchItemType" data-search>
-                        <option value="" selected disabled>전체</option>
-                        <option value="P">제품</option>
-                        <option value="H">반제품</option>
-                        <option value="M">자재</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label>사용 여부</label>
-                    <select class="form-control form-control-sm" id="searchUseYn" data-search>
-                        <option value="">전체</option>
-                        <option value="Y">사용</option>
-                        <option value="N">미사용</option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="row">
                 <div class="col-md-3">
                     <label>거래처 코드</label>
                     <input type="text" class="form-control form-control-sm" id="searchCustomerCode"
@@ -58,11 +31,15 @@
                            name="searchCustomerName" placeholder="거래처 명" data-search>
                 </div>
                 <div class="col-md-3">
-                    <label>바코드</label>
-                    <input type="text" class="form-control form-control-sm" id="searchBarcode" name="searchBarcode"
-                           placeholder="바코드" data-search>
+                    <label>사용 여부</label>
+                    <select class="form-control form-control-sm" id="searchUseYn" data-search>
+                        <option value="">전체</option>
+                        <option value="Y">사용</option>
+                        <option value="N">미사용</option>
+                    </select>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
