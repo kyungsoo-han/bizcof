@@ -1,0 +1,179 @@
+
+server:
+  port: 30011
+
+logging:
+  level:
+    org.hibernate.SQL: info
+    org.hibernate.type: warn
+    org.springframework.web.servlet: warn
+    org.hibernate.type.descriptor.sql.BasicBinder: warn
+    org.redisson: debug
+
+## Swagger doc
+springdoc:
+  version: 3.0.3 # OpenAPI 버전 명시
+  swagger-ui:
+    path: /swagger-ui.html # Swagger UI 경로
+
+
+---
+
+spring:
+  profiles:
+    default: local
+  datasource:
+    url: jdbc:log4jdbc:mariadb://127.0.0.1:3306/various
+    username: guest
+    password: guest0!
+    #driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+  thymeleaf:
+    suffix: .html
+    cache: false
+    prefix: classpath:/templates/
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Seoul
+  security:
+    user:
+      name: admin
+      password: 1234
+  sql:
+    init:
+      mode: never
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: annotated
+#  redis:       #redisson 사용
+#    host: 192.168.0.13
+#    port: 6379
+  kafka:
+    bootstrap-servers: localhost:9092 # Kafka 브로커 주소
+    consumer:
+      group-id: inventory-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+redisson:
+  config: |
+    singleServerConfig:
+      address: "redis://127.0.0.1:6379"
+      connectionPoolSize: 32
+      connectionMinimumIdleSize: 10
+
+kafka:
+  clusters:
+    - name: local-kraft
+      bootstrapServers: localhost:9092
+      metrics:
+        type: JMX
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+  endpoint:
+    health:
+      show-details: always
+
+wms:
+  allocation:
+    strategy: expire_date
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: production
+  datasource:
+    url: jdbc:log4jdbc:mariadb://180.69.179.62:3306/various
+    username: guest
+    password: guest0!
+    #driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+  thymeleaf:
+    suffix: .html
+    cache: false
+    prefix: classpath:/templates/
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Seoul
+  security:
+    user:
+      name: admin
+      password: 1234
+  sql:
+    init:
+      mode: never
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: annotated
+  kafka:
+    bootstrap-servers: 192.168.0.12:31010 # Kafka 브로커 주소
+    consumer:
+      group-id: inventory-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+redisson:
+  config: |
+    singleServerConfig:
+      address: "redis://192.168.0.12:6379"
+      connectionPoolSize: 32
+      connectionMinimumIdleSize: 10
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+  endpoint:
+    health:
+      show-details: always
+
+wms:
+  allocation:
+    strategy: expire_date
