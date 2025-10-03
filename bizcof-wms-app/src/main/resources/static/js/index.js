@@ -1,5 +1,5 @@
 const isLocalhost = window.location.hostname === 'localhost';
-const serverUrl = isLocalhost ? 'http://localhost:30011' : 'http://39.117.246.63:30011';
+const serverUrl = isLocalhost ? 'http://localhost:30011' : 'http://180.69.179.62:30011';
 
 const token = sessionStorage.getItem("accessToken");
 const userName = sessionStorage.getItem("userName");

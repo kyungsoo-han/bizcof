@@ -14,7 +14,6 @@ on:
     branches:
       - master                      # master 브랜치에 push 시 자동 실행됨 (CI/CD)
       - develop                     # develop 브랜치에 push 시도 가능하지만 수동 배포 권장
-      -
     paths:
        - 'bizcof-wms-app/**'             # 앱 모듈 전체
        - 'bizcof-wms-api/**'             # API 모듈 전체
@@ -36,8 +35,8 @@ on:
 env:
   JAVA_VERSION: '17'                            # Java 17 사용
   JAVA_DISTRIBUTION: 'temurin'                  # Adoptium Temurin JDK 사용
-  TARGET_SERVER_IP_DEV: 39.117.246.63           # 개발 환경 대상 서버의 공인 IP
-  TARGET_SERVER_IP_PROD: 39.117.246.63           # 운영 환경 대상 서버의 IP
+  TARGET_SERVER_IP_DEV: 180.69.179.62           # 개발 환경 대상 서버의 공인 IP
+  TARGET_SERVER_IP_PROD: 180.69.179.62           # 운영 환경 대상 서버의 IP
   REMOTE_USER: root                             # 배포할 때 사용할 SSH 유저명
 
 jobs:
