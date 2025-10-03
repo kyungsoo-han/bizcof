@@ -23,7 +23,7 @@ spring:
   profiles:
     default: local
   datasource:
-    url: jdbc:log4jdbc:mariadb://127.0.0.1:3306/various
+    url: jdbc:log4jdbc:mariadb://192.168.0.12:3306/various
     username: guest
     password: guest0!
     #driver-class-name: org.mariadb.jdbc.Driver
@@ -109,7 +109,7 @@ spring:
     activate:
       on-profile: production
   datasource:
-    url: jdbc:log4jdbc:mariadb://180.69.179.62:3306/various
+    url: jdbc:log4jdbc:mariadb://192.168.0.12:3306/various
     username: guest
     password: guest0!
     #driver-class-name: org.mariadb.jdbc.Driver
