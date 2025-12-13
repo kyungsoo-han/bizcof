@@ -9,7 +9,7 @@ import org.hibernate.annotations.Comment;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "t_common_code", schema = "various")
+@Table(name = "t_common_code", schema = "bizcof")
 @IdClass(CommonCodeId.class)
 @Getter
 @NoArgsConstructor

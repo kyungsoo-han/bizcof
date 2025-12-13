@@ -74,7 +74,7 @@ dependencies {
 
 
 
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    runtimeOnly 'org.postgresql:postgresql'
 }
 
 test {

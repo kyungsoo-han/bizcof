@@ -23,11 +23,16 @@ spring:
   profiles:
     default: local
   datasource:
-    url: jdbc:log4jdbc:mariadb://192.168.0.12:3306/various
-    username: guest
-    password: guest0!
-    #driver-class-name: org.mariadb.jdbc.Driver
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:postgresql://192.168.0.12:5432/various?currentSchema=bizcof
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+#  datasource:
+#    url: jdbc:log4jdbc:mariadb://192.168.0.12:3306/various
+#    username: guest
+#    password: guest0!
+#    #driver-class-name: org.mariadb.jdbc.Driver
+#    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
   thymeleaf:
     suffix: .html
     cache: false
@@ -39,6 +44,7 @@ spring:
       enabled: true
   jpa:
     defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
     open-in-view: false
@@ -102,6 +108,12 @@ wms:
   allocation:
     strategy: expire_date
 
+# JWT 설정
+jwt:
+  secret: bizcof-wms-secret-key-must-be-at-least-256-bits-long-for-hs512-algorithm-security
+  access-expiration: 900000      # 15분 (밀리초)
+  refresh-expiration: 604800000  # 7일 (밀리초)
+
 ---
 
 spring:
@@ -109,11 +121,16 @@ spring:
     activate:
       on-profile: production
   datasource:
-    url: jdbc:log4jdbc:mariadb://192.168.0.12:3306/various
-    username: guest
-    password: guest0!
-    #driver-class-name: org.mariadb.jdbc.Driver
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:postgresql://192.168.0.12:5432/various?currentSchema=bizcof
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+#  datasource:
+#    url: jdbc:log4jdbc:mariadb://192.168.0.12:3306/various
+#    username: guest
+#    password: guest0!
+#    #driver-class-name: org.mariadb.jdbc.Driver
+#    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
   thymeleaf:
     suffix: .html
     cache: false
@@ -124,6 +141,7 @@ spring:
     livereload:
       enabled: true
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: none
@@ -177,3 +195,9 @@ management:
 wms:
   allocation:
     strategy: expire_date
+
+# JWT 설정
+jwt:
+  secret: ${JWT_SECRET:bizcof-wms-secret-key-must-be-at-least-256-bits-long-for-hs512-algorithm-security}
+  access-expiration: 900000      # 15분 (밀리초)
+  refresh-expiration: 604800000  # 7일 (밀리초)

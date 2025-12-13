@@ -15,7 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "t_item", schema = "various")
+@Table(name = "t_item", schema = "bizcof")
 @ToString(callSuper = true)
 public class Item extends BaseEntity {
 

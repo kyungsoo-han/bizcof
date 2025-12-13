@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "t_allocation_detail", schema = "various")
+@Table(name = "t_allocation_detail", schema = "bizcof")
 @IdClass(AllocationDetailId.class)
 @Getter
 @NoArgsConstructor

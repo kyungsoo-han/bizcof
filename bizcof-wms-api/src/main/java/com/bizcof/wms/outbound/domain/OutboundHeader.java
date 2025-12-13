@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_outbound_header")
+@Table(name = "t_outbound_header", schema = "bizcof")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

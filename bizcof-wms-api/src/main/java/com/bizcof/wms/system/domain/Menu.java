@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "t_menu")
+@Table(name = "t_menu", schema = "bizcof")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "t_inbound_header")
+@Table(name = "t_inbound_header", schema = "bizcof")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

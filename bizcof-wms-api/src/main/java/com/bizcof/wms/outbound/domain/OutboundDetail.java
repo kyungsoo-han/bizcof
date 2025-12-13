@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "t_outbound_detail", schema = "various")
+@Table(name = "t_outbound_detail", schema = "bizcof")
 @IdClass(OutboundDetailId.class)
 @Builder
 public class OutboundDetail extends BaseEntity {

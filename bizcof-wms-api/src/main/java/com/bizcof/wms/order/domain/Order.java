@@ -9,7 +9,7 @@ import org.hibernate.annotations.Comment;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "t_order", schema = "various")
+@Table(name = "t_order", schema = "bizcof")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

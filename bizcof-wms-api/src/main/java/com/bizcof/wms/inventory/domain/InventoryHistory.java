@@ -8,7 +8,7 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "t_inventory_history")
+@Table(name = "t_inventory_history", schema = "bizcof")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

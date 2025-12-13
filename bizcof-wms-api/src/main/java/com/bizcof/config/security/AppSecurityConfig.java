@@ -9,78 +9,123 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class AppSecurityConfig {
 
-    //private final CustomAuthFailureHandler customFailureHandler;
-    private final CustomLoginSuccessHandler customLoginSuccessHandler;
-
-    /*
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }*/
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            // CORS 설정
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+            // 프레임 옵션 (iframe 허용)
             .headers(headers -> headers
-                       .frameOptions(frameOptions -> frameOptions
-                           .sameOrigin() // 같은 도메인에서만 iframe 허용
-                       )
-                   )
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/plugins/**", "/common/**", "/bsrp/**", "/dist/**", "/css/**", "/js/**",
-                                "/api-docs/**","/api/api-docs/**","/swagger-ui/**","/swagger-ui.html","/swagger-resources/**").permitAll()
-                        .requestMatchers("/user/login", "/user/loginForm", "/").permitAll()
-                        //.requestMatchers("/**/*.html").permitAll()
-                        .requestMatchers( "/**").permitAll()
-//                                        String requestURI = context.getRequest().getRequestURI();
-//                                        if (requestURI.startsWith("/") && requestURI.endsWith(".html")) {
-//                                            return new AuthorizationDecision(true); // ✅ HTML 페이지 요청만 허용
-//                                        }
-//                                        return new AuthorizationDecision(false); // ❌ API 요청은 인증 필요
-//                                    })
+                .frameOptions(frameOptions -> frameOptions.sameOrigin())
+            )
 
-                        .anyRequest().authenticated()
-                )
-           /*     .formLogin(form -> form
-                        .loginPage("/user/loginForm")
-                        //.loginProcessingUrl("/user/login")  //로그인 API 커스텀으로 지정
-                        .usernameParameter("loginId")
-                        .passwordParameter("password")
-                        //.successHandler(customLoginSuccessHandler)
-                        //.defaultSuccessUrl("/", true)
-                        .failureUrl("/user/loginForm?error=true")
-                        //.failureHandler(customFailureHandler)
-                        .permitAll()
-                )*/
-                .formLogin(AbstractHttpConfigurer::disable) // ❌ 기본 로그인 폼 비활성화
-                .httpBasic(AbstractHttpConfigurer::disable) // ❌ 기본 HTTP Basic 인증 비활성화
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/user/loginForm")
-                        .permitAll()
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                        .sessionFixation().none()  // 로그인 후 세션 ID 변경 방지 -> successHandler에서 IndexCOntroller로 accessToken 전달 안돼서 설정
-                )
-                .csrf(AbstractHttpConfigurer::disable); //로컬 환경에서 확인을 위해 disable;
+            // 인가 규칙
+            .authorizeHttpRequests(auth -> auth
+                // 인증 없이 접근 가능한 경로
+                .requestMatchers(
+                    "/api/auth/**",           // 인증 관련 API
+                    "/api/version",           // 버전 체크 API
+                    "/api/system/user/login", // 로그인
+                    "/api/system/user/logout" // 로그아웃
+                ).permitAll()
 
+                // Swagger
+                .requestMatchers(
+                    "/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/swagger-resources/**",
+                    "/v3/api-docs/**"
+                ).permitAll()
+
+                // 정적 리소스
+                .requestMatchers(
+                    "/plugins/**",
+                    "/common/**",
+                    "/bsrp/**",
+                    "/dist/**",
+                    "/css/**",
+                    "/js/**",
+                    "/images/**",
+                    "/favicon.ico"
+                ).permitAll()
+
+                // 그 외 API는 인증 필요
+                .requestMatchers("/api/**").authenticated()
+
+                // 나머지 요청 (HTML 등)
+                .anyRequest().permitAll()
+            )
+
+            // Form 로그인 비활성화
+            .formLogin(AbstractHttpConfigurer::disable)
+
+            // HTTP Basic 비활성화
+            .httpBasic(AbstractHttpConfigurer::disable)
+
+            // CSRF 비활성화 (JWT 사용 시)
+            .csrf(AbstractHttpConfigurer::disable)
+
+            // 세션 사용 안함 (Stateless)
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+
+            // JWT 인증 필터 추가
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173",      // Vite 개발 서버
+            "http://localhost:5174",      // Vite 개발 서버 (대체 포트)
+            "http://localhost:3000",
+            "https://wms.bizcof.com"      // 운영 도메인
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // {noop}, {bcrypt} 등 다양한 인코딩 지원
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean

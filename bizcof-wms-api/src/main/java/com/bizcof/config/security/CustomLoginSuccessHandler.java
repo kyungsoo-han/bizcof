@@ -28,7 +28,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
          // Access Token 및 Refresh Token 생성
          String accessToken = tokenProvider.generateAccessToken(username);
          String refreshToken = tokenProvider.generateRefreshToken(username);
-         long refreshTokenExpiry = tokenProvider.getRefreshTokenExpiry(); // Refresh Token 만료 시간
+         long refreshTokenExpiry = tokenProvider.getRefreshTokenExpiration(); // Refresh Token 만료 시간
 
          SecurityContextHolder.getContext().setAuthentication(authentication);
          System.out.println("authentication.getPrincipal() = " + authentication.getPrincipal());

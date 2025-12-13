@@ -29,8 +29,12 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("=== loadUserByUsername 호출: {}", username);
+
         User user = userRepository.findByLoginId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
+
+        log.info("=== 사용자 조회 성공: loginId={}, password={}", user.getLoginId(), user.getPassword());
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getLoginId())

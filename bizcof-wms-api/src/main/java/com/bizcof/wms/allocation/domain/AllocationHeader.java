@@ -9,7 +9,7 @@ import org.hibernate.annotations.Comment;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "t_allocation_header", schema = "various")
+@Table(name = "t_allocation_header", schema = "bizcof")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

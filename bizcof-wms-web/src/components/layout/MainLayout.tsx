@@ -6,6 +6,7 @@ import { AppHeader } from './AppHeader';
 import { TabBar } from './TabBar';
 import { useAuthStore } from '@/stores/authStore';
 import { useTabStore } from '@/stores/tabStore';
+import { VersionCheckAlert } from '@/features/version-check';
 
 export function MainLayout() {
   const { isAuthenticated, checkAuth } = useAuthStore();
@@ -36,6 +37,7 @@ export function MainLayout() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
+        <VersionCheckAlert />
         <AppHeader />
         <TabBar />
         <div className="flex flex-1 flex-col gap-4 p-4">

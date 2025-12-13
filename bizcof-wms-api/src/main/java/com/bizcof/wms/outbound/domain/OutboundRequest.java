@@ -7,7 +7,7 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "t_outbound_request", schema = "various")
+@Table(name = "t_outbound_request", schema = "bizcof")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
