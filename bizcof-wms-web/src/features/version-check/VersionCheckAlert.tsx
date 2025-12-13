@@ -1,8 +1,14 @@
 import { Button } from '@/components/ui/button';
 import useVersionCheck from './useVersionCheck';
+import { SessionExpiredModal } from '@/features/session';
 
 const VersionCheckAlert = () => {
-  const { needsRefresh, refreshPage } = useVersionCheck();
+  const { needsRefresh, sessionExpired, refreshPage } = useVersionCheck();
+
+  // 세션 만료 모달
+  if (sessionExpired) {
+    return <SessionExpiredModal open={true} />;
+  }
 
   if (!needsRefresh) return null;
 

@@ -5,8 +5,13 @@ interface VersionResponse {
   buildTime: string;
 }
 
+// 세션 타임아웃 설정 (밀리초) - 30분
+const SESSION_TIMEOUT = 30 * 60 * 1000;
+const LAST_ACTIVITY_KEY = 'lastActivity';
+
 const useVersionCheck = (interval = 60000) => {
   const [needsRefresh, setNeedsRefresh] = useState(false);
+  const [sessionExpired, setSessionExpired] = useState(false);
   const [currentVersion, setCurrentVersion] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,8 +27,19 @@ const useVersionCheck = (interval = 60000) => {
 
     fetchInitialVersion();
 
-    // 주기적으로 버전 체크
-    const checkVersion = async () => {
+    // 주기적으로 버전 및 세션 체크
+    const checkAll = async () => {
+      // 1. 세션 체크
+      const lastActivity = localStorage.getItem(LAST_ACTIVITY_KEY);
+      if (lastActivity) {
+        const elapsed = Date.now() - parseInt(lastActivity, 10);
+        if (elapsed > SESSION_TIMEOUT) {
+          setSessionExpired(true);
+          return; // 세션 만료 시 버전 체크 불필요
+        }
+      }
+
+      // 2. 버전 체크
       try {
         const data = await api.get<VersionResponse>('version');
         if (currentVersion && data.buildTime !== currentVersion) {
@@ -34,7 +50,7 @@ const useVersionCheck = (interval = 60000) => {
       }
     };
 
-    const intervalId = setInterval(checkVersion, interval);
+    const intervalId = setInterval(checkAll, interval);
 
     return () => clearInterval(intervalId);
   }, [interval, currentVersion]);
@@ -43,7 +59,7 @@ const useVersionCheck = (interval = 60000) => {
     window.location.reload();
   };
 
-  return { needsRefresh, refreshPage };
+  return { needsRefresh, sessionExpired, refreshPage };
 };
 
 export default useVersionCheck;

@@ -1,8 +1,11 @@
 import ky, { type KyRequest, type KyResponse, type Options } from 'ky';
 
-// 세션 타임아웃 설정 (밀리초) - 15분
-const SESSION_TIMEOUT = 15 * 60 * 1000;
+// 세션 타임아웃 설정 (밀리초) - 30분
+const SESSION_TIMEOUT = 30 * 60 * 1000;
 const LAST_ACTIVITY_KEY = 'lastActivity';
+
+// 세션 만료 이벤트
+export const SESSION_EXPIRED_EVENT = 'session-expired';
 
 // 마지막 활동 시간 업데이트
 export const updateLastActivity = () => {
@@ -23,7 +26,9 @@ const forceLogout = () => {
   localStorage.removeItem('accessToken');
   localStorage.removeItem('user_info');
   localStorage.removeItem(LAST_ACTIVITY_KEY);
-  window.location.href = '/login';
+
+  // 세션 만료 모달 표시를 위한 커스텀 이벤트 발생
+  window.dispatchEvent(new CustomEvent(SESSION_EXPIRED_EVENT));
 };
 
 // 토큰 갱신 중복 방지를 위한 플래그

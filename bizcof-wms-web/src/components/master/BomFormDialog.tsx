@@ -342,10 +342,14 @@ export function BomFormDialog({ open, onOpenChange, bomId }: BomFormDialogProps)
             hiddenCol('id'),
             col('code', '품목코드', 120),
             col('name', '품목명', 200),
-            col('customerName', '거래처', 150),
+            col('spec', '규격', 100),
+            col('inventoryUnitCode', '단위', 60),
+            numCol('boxPerSkuQty', '박스당 수량', 100),
+            numCol('pltPerSkuQty', '팔레트당 수량', 100),
           ]}
           fetchFn={itemApi.getModalItems}
           queryKey="items-modal"
+          maxWidth="max-w-5xl"
         />
 
         {/* 자재 검색 다이얼로그 */}
@@ -359,11 +363,15 @@ export function BomFormDialog({ open, onOpenChange, bomId }: BomFormDialogProps)
             hiddenCol('id'),
             col('code', '품목코드', 120),
             col('name', '품목명', 200),
-            col('customerName', '거래처', 150),
+            col('spec', '규격', 100),
+            col('inventoryUnitCode', '단위', 60),
+            numCol('boxPerSkuQty', '박스당 수량', 100),
+            numCol('pltPerSkuQty', '팔레트당 수량', 100),
           ]}
           fetchFn={itemApi.getModalItems}
           queryKey="items-modal"
           multiSelect
+          maxWidth="max-w-5xl"
         />
       </DialogContent>
     </Dialog>

@@ -128,13 +128,14 @@ function InboundManage() {
             </div>
             <div className="flex gap-2">
               <Button
+                variant="outline"
                 size="sm"
                 onClick={() => {
                   setEditInboundNo(undefined);
                   setIsFormDialogOpen(true);
                 }}
               >
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 mr-2 text-blue-500" />
                 입고 등록
               </Button>
               <Button
@@ -148,11 +149,11 @@ function InboundManage() {
                   }
                 }}
               >
-                <Pencil className="h-4 w-4 mr-2" />
+                <Pencil className="h-4 w-4 mr-2 text-amber-500" />
                 입고 수정
               </Button>
               <Button
-                variant="destructive"
+                variant="outline"
                 size="sm"
                 disabled={!selectedInboundNo}
                 onClick={() => {
@@ -161,7 +162,7 @@ function InboundManage() {
                   }
                 }}
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="h-4 w-4 mr-2 text-red-500" />
                 입고 삭제
               </Button>
             </div>
