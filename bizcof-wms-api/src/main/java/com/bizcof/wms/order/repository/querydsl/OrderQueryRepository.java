@@ -29,9 +29,9 @@ public class OrderQueryRepository extends QueryDslSupport {
      */
     public List<OrderHeaderResponse> findOrderHeaders(SearchOrderRequest request) {
         BooleanBuilder builder = and(
-                like(order.orderNo, request.getSearchOrderNo()),
-                like(order.customerName, request.getSearchCustomerName()),
-                between(order.orderDate, request.getOrderStartDate(), request.getOrderEndDate())
+                like(order.orderNo, request.getOrderNo()),
+                like(order.customerName, request.getCustomerName()),
+                between(order.orderDate, request.getStartDate(), request.getEndDate())
         );
 
         return queryFactory

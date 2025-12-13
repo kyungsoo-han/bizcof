@@ -9,6 +9,17 @@ import { col, hiddenCol, numCol, dateCol } from '@/lib/grid-helpers';
 import { orderApi, type OrderSearchRequest, type Order, type OrderDetail } from '@/services/api/order';
 import { OrderFormDialog } from '@/components/order/OrderFormDialog';
 import { Plus, Pencil, CheckCircle, Trash2, Download } from 'lucide-react';
+import { format, subDays } from 'date-fns';
+
+// 기본 날짜 범위 (최근 7일)
+const getDefaultDateRange = () => {
+  const endDate = new Date();
+  const startDate = subDays(endDate, 6);
+  return {
+    startDate: format(startDate, 'yyyy-MM-dd'),
+    endDate: format(endDate, 'yyyy-MM-dd'),
+  };
+};
 
 export const Route = createFileRoute('/_layout/view/order/manage')({
   component: OrderManage,
@@ -18,7 +29,7 @@ function OrderManage() {
   const queryClient = useQueryClient();
   const masterGridRef = useRef<DataGridRef>(null);
   const detailGridRef = useRef<DataGridRef>(null);
-  const [searchParams, setSearchParams] = useState<OrderSearchRequest>({});
+  const [searchParams, setSearchParams] = useState<OrderSearchRequest>(getDefaultDateRange());
   const [selectedOrderNo, setSelectedOrderNo] = useState<string | null>(null);
   const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
   const [editOrderNo, setEditOrderNo] = useState<string | undefined>(undefined);
@@ -109,6 +120,7 @@ function OrderManage() {
 
   // 검색 초기화
   const handleReset = () => {
+    setSearchParams(getDefaultDateRange());
     setSelectedOrderNo(null);
   };
 

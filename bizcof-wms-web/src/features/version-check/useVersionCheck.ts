@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { api } from '@/services/api/client';
+import { api, SESSION_TIMEOUT } from '@/services/api/client';
 
 interface VersionResponse {
   buildTime: string;
 }
 
-// 세션 타임아웃 설정 (밀리초) - 30분
-const SESSION_TIMEOUT = 30 * 60 * 1000;
 const LAST_ACTIVITY_KEY = 'lastActivity';
 
 const useVersionCheck = (interval = 60000) => {

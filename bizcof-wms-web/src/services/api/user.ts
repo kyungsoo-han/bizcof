@@ -80,8 +80,8 @@ export const userApi = {
   /**
    * 사용자 수정
    */
-  async updateUser(data: UserUpdateRequest): Promise<UserUpdateRequest> {
-    return api.put<UserUpdateRequest>('system/user', data);
+  async updateUser(data: UserUpdateRequest): Promise<void> {
+    return api.put<void>('system/user', data);
   },
 
   /**

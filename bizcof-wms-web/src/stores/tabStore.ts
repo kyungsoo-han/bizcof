@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface Tab {
   id: string;
@@ -16,7 +17,9 @@ interface TabState {
   closeAllTabs: () => void;
 }
 
-export const useTabStore = create<TabState>((set) => ({
+export const useTabStore = create<TabState>()(
+  persist(
+    (set) => ({
   tabs: [],
   activeTabId: null,
 
@@ -66,4 +69,21 @@ export const useTabStore = create<TabState>((set) => ({
       tabs: [],
       activeTabId: null,
     }),
-}));
+    }),
+    {
+      name: 'tab-storage',
+      storage: {
+        getItem: (name) => {
+          const value = sessionStorage.getItem(name);
+          return value ? JSON.parse(value) : null;
+        },
+        setItem: (name, value) => {
+          sessionStorage.setItem(name, JSON.stringify(value));
+        },
+        removeItem: (name) => {
+          sessionStorage.removeItem(name);
+        },
+      },
+    }
+  )
+);

@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class SearchUserRequest {
-    private String searchLoginId;
-    private String searchUserName;
-    private String searchUseYn;
+    private String userId;      // loginId
+    private String userName;    // name
+    private String department;
+    private String useYn;
 }

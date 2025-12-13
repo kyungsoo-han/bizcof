@@ -192,7 +192,7 @@ $(document).on("shown.bs.modal", "#itemSearchModal", function () {
     });
   }
 
-  // 엔터 입력 시 자동 조회
+  // 엔터 입력 시 자동 조회ㅠ
   document.getElementById("searchKeyword").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();

@@ -31,10 +31,10 @@ public class InboundQueryRepository extends QueryDslSupport {
 
     public List<InboundHeaderResponse> findInboundHeaders(SearchInboundRequest request) {
         BooleanBuilder builder = and(
-                like(inboundHeader.inboundNo, request.getSearchInboundNo()),
-                like(customer.name, request.getSearchCustomerName()),
-                like(customer.code, request.getSearchCustomerCode()),
-                between(inboundHeader.inboundDate, request.getInboundStartDate(), request.getInboundEndDate())
+                like(inboundHeader.inboundNo, request.getInboundNo()),
+                like(customer.name, request.getCustomerName()),
+                like(customer.code, request.getCustomerCode()),
+                between(inboundHeader.inboundDate, request.getStartDate(), request.getEndDate())
 
         );
 

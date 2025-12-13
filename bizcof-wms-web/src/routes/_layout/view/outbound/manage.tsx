@@ -9,6 +9,17 @@ import { col, hiddenCol, numCol, dateCol } from '@/lib/grid-helpers';
 import { outboundApi, type OutboundSearchRequest, type Outbound } from '@/services/api/outbound';
 import { OutboundFormDialog } from '@/components/outbound/OutboundFormDialog';
 import { Plus, Pencil, Trash2, Download } from 'lucide-react';
+import { format, subDays } from 'date-fns';
+
+// 기본 날짜 범위 (최근 7일)
+const getDefaultDateRange = () => {
+  const endDate = new Date();
+  const startDate = subDays(endDate, 6);
+  return {
+    startDate: format(startDate, 'yyyy-MM-dd'),
+    endDate: format(endDate, 'yyyy-MM-dd'),
+  };
+};
 
 export const Route = createFileRoute('/_layout/view/outbound/manage')({
   component: OutboundManage,
@@ -18,7 +29,7 @@ function OutboundManage() {
   const queryClient = useQueryClient();
   const masterGridRef = useRef<DataGridRef>(null);
   const detailGridRef = useRef<DataGridRef>(null);
-  const [searchParams, setSearchParams] = useState<OutboundSearchRequest>({});
+  const [searchParams, setSearchParams] = useState<OutboundSearchRequest>(getDefaultDateRange());
   const [selectedOutboundNo, setSelectedOutboundNo] = useState<string | null>(null);
   const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
   const [editOutboundNo, setEditOutboundNo] = useState<string | undefined>(undefined);
@@ -87,6 +98,7 @@ function OutboundManage() {
 
   // 검색 초기화
   const handleReset = () => {
+    setSearchParams(getDefaultDateRange());
     setSelectedOutboundNo(null);
   };
 

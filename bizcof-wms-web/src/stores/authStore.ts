@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { authApi, type User } from '@/services/api/auth';
+import { useTabStore } from './tabStore';
 
 interface AuthStore {
   user: User | null;
@@ -37,6 +38,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
     set({ isLoading: true });
     try {
       await authApi.logout();
+      // 탭 초기화
+      useTabStore.getState().closeAllTabs();
       set({
         user: null,
         isAuthenticated: false,

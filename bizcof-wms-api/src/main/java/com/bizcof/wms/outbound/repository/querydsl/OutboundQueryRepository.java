@@ -30,10 +30,10 @@ public class OutboundQueryRepository extends QueryDslSupport {
 
     public List<OutboundHeaderResponse> findOutboundHeaders(SearchOutboundRequest request) {
         BooleanBuilder builder = and(
-                like(outboundHeader.outboundNo, request.getSearchOutboundNo()),
-                like(customer.name, request.getSearchCustomerName()),
-                like(customer.code, request.getSearchCustomerCode()),
-                between(outboundHeader.outboundDate, request.getOutboundStartDate(), request.getOutboundEndDate())
+                like(outboundHeader.outboundNo, request.getOutboundNo()),
+                like(customer.name, request.getCustomerName()),
+                like(customer.code, request.getCustomerCode()),
+                between(outboundHeader.outboundDate, request.getStartDate(), request.getEndDate())
 
         );
 

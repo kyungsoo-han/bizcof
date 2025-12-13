@@ -99,55 +99,43 @@ function UserManage() {
 
   // 사용자 수정
   const handleEditUser = () => {
-    const checkedRows = gridRef.current?.getCheckedRows() || [];
+    const selectedRows = gridRef.current?.getSelectedRows() || [];
 
-    if (checkedRows.length === 0) {
+    if (selectedRows.length === 0) {
       alert('수정할 사용자를 선택해주세요.');
       return;
     }
 
-    if (checkedRows.length > 1) {
-      alert('사용자는 하나만 선택해주세요.');
-      return;
-    }
-
     setModalMode('edit');
-    setSelectedUser(checkedRows[0] as User);
+    setSelectedUser(selectedRows[0] as User);
     setIsModalOpen(true);
   };
 
   // 사용자 삭제
   const handleDeleteUser = () => {
-    const checkedRows = gridRef.current?.getCheckedRows() || [];
+    const selectedRows = gridRef.current?.getSelectedRows() || [];
 
-    if (checkedRows.length === 0) {
+    if (selectedRows.length === 0) {
       alert('삭제할 사용자를 선택해주세요.');
       return;
     }
 
-    if (confirm(`${checkedRows.length}명의 사용자를 삭제하시겠습니까?`)) {
-      checkedRows.forEach((row: any) => {
-        deleteMutation.mutate(row.id);
-      });
+    if (confirm('선택한 사용자를 삭제하시겠습니까?')) {
+      deleteMutation.mutate((selectedRows[0] as User).id);
     }
   };
 
   // 비밀번호 초기화
   const handleResetPassword = () => {
-    const checkedRows = gridRef.current?.getCheckedRows() || [];
+    const selectedRows = gridRef.current?.getSelectedRows() || [];
 
-    if (checkedRows.length === 0) {
+    if (selectedRows.length === 0) {
       alert('비밀번호를 초기화할 사용자를 선택해주세요.');
       return;
     }
 
-    if (checkedRows.length > 1) {
-      alert('사용자는 하나만 선택해주세요.');
-      return;
-    }
-
     if (confirm('선택한 사용자의 비밀번호를 초기화하시겠습니까?')) {
-      resetPasswordMutation.mutate((checkedRows[0] as User).id);
+      resetPasswordMutation.mutate((selectedRows[0] as User).id);
     }
   };
 

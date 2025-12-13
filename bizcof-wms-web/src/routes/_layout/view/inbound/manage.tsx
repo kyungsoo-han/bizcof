@@ -9,6 +9,17 @@ import { col, hiddenCol, numCol, dateCol } from '@/lib/grid-helpers';
 import { inboundApi, type InboundSearchRequest, type Inbound } from '@/services/api/inbound';
 import { InboundFormDialog } from '@/components/inbound/InboundFormDialog';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { format, subDays } from 'date-fns';
+
+// 기본 날짜 범위 (최근 7일)
+const getDefaultDateRange = () => {
+  const endDate = new Date();
+  const startDate = subDays(endDate, 6);
+  return {
+    startDate: format(startDate, 'yyyy-MM-dd'),
+    endDate: format(endDate, 'yyyy-MM-dd'),
+  };
+};
 
 export const Route = createFileRoute('/_layout/view/inbound/manage')({
   component: InboundManage,
@@ -18,7 +29,7 @@ function InboundManage() {
   const queryClient = useQueryClient();
   const masterGridRef = useRef<DataGridRef>(null);
   const detailGridRef = useRef<DataGridRef>(null);
-  const [searchParams, setSearchParams] = useState<InboundSearchRequest>({});
+  const [searchParams, setSearchParams] = useState<InboundSearchRequest>(getDefaultDateRange());
   const [selectedInboundNo, setSelectedInboundNo] = useState<string | null>(null);
   const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
   const [editInboundNo, setEditInboundNo] = useState<string | undefined>(undefined);
@@ -102,6 +113,7 @@ function InboundManage() {
 
   // 검색 초기화
   const handleReset = () => {
+    setSearchParams(getDefaultDateRange());
     setSelectedInboundNo(null);
   };
 

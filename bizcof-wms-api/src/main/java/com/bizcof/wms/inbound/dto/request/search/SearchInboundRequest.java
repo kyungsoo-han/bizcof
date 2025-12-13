@@ -13,19 +13,19 @@ import java.util.List;
 @AllArgsConstructor(staticName = "of")
 public class SearchInboundRequest {
     @Schema(description = "입고 번호", example = "INB202505110001")
-    private String searchInboundNo;
+    private String inboundNo;
 
     @Schema(description = "거래처 코드", example = "2001")
-    private String searchCustomerCode;
+    private String customerCode;
 
-    @Schema(description = "거래처 명", example = "2001")
-    private String searchCustomerName;
+    @Schema(description = "거래처 명", example = "거래처명")
+    private String customerName;
 
-    @Schema(description = "입고 일자 From", example = "2025-05-12")
-    private String inboundStartDate;
+    @Schema(description = "시작일", example = "2025-05-12")
+    private String startDate;
 
-    @Schema(description = "입고 일자 to", example = "2025-05-12")
-    private String inboundEndDate;
+    @Schema(description = "종료일", example = "2025-05-12")
+    private String endDate;
 
 
 

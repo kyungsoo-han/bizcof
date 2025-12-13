@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -24,12 +25,20 @@ public class UserQueryRepository extends QueryDslSupport {
 
     public List<UserDto> findAllUsers(SearchUserRequest request) {
 
-        BooleanBuilder builder = and(
-                like(user.loginId, request.getSearchLoginId()),
-                like(user.name, request.getSearchUserName()),
-                like(user.useYn, request.getSearchUseYn())
+        BooleanBuilder builder = new BooleanBuilder();
 
-        );
+        if (StringUtils.hasText(request.getUserId())) {
+            builder.and(user.loginId.containsIgnoreCase(request.getUserId()));
+        }
+        if (StringUtils.hasText(request.getUserName())) {
+            builder.and(user.name.containsIgnoreCase(request.getUserName()));
+        }
+        if (StringUtils.hasText(request.getDepartment())) {
+            builder.and(user.department.containsIgnoreCase(request.getDepartment()));
+        }
+        if (StringUtils.hasText(request.getUseYn()) && !"ALL".equals(request.getUseYn())) {
+            builder.and(user.useYn.eq(request.getUseYn()));
+        }
 
         return queryFactory
                 .select(Projections.constructor(
@@ -37,13 +46,18 @@ public class UserQueryRepository extends QueryDslSupport {
                         user.id,
                         user.loginId,
                         user.name,
-                        user.memo,
+                        user.email,
+                        user.tel,
+                        user.department,
+                        user.position,
+                        user.role,
                         user.useYn,
                         user.createdDt,
                         user.modifiedDt
                 ))
                 .from(user)
                 .where(builder)
+                .orderBy(user.id.desc())
                 .fetch();
     }
 

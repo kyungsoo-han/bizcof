@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from '@tanstack/react-router';
+import { useLocation } from '@tanstack/react-router';
 import { useTabStore } from '@/stores/tabStore';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,6 @@ import {
 import { useRef, useState, useEffect } from 'react';
 
 export function TabBar() {
-  const navigate = useNavigate();
   const location = useLocation();
   const { tabs, activeTabId, setActiveTab, removeTab, closeOtherTabs, closeAllTabs } = useTabStore();
   const tabListRef = useRef<HTMLDivElement>(null);
@@ -37,24 +36,15 @@ export function TabBar() {
     return () => window.removeEventListener('resize', checkScroll);
   }, [tabs]);
 
-  const handleTabClick = (tabId: string, path: string) => {
+  const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
-    navigate({ to: path });
+    // navigate 제거 - TabContentArea가 activeTabId에 따라 렌더링
   };
 
   const handleCloseTab = (e: React.MouseEvent, tabId: string) => {
     e.stopPropagation();
-    const remainingTabs = tabs.filter((t) => t.id !== tabId);
     removeTab(tabId);
-
-    // 모든 탭이 닫히면 대시보드로 이동
-    if (remainingTabs.length === 0) {
-      navigate({ to: '/' });
-    } else if (activeTabId === tabId && remainingTabs.length > 0) {
-      // 활성 탭을 닫으면 마지막 탭으로 이동
-      const lastTab = remainingTabs[remainingTabs.length - 1];
-      navigate({ to: lastTab.path });
-    }
+    // TabContentArea가 자동으로 다음 활성 탭을 렌더링
   };
 
   const scrollTabs = (direction: 'left' | 'right') => {
@@ -81,12 +71,7 @@ export function TabBar() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="mt-0">
-          <DropdownMenuItem
-            onClick={() => {
-              closeAllTabs();
-              navigate({ to: '/' });
-            }}
-          >
+          <DropdownMenuItem onClick={() => closeAllTabs()}>
             모두 닫기
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => activeTabId && closeOtherTabs(activeTabId)}>
@@ -116,7 +101,7 @@ export function TabBar() {
         {tabs.map((tab) => (
           <div
             key={tab.id}
-            onClick={() => handleTabClick(tab.id, tab.path)}
+            onClick={() => handleTabClick(tab.id)}
             className={`
               flex items-center gap-2 px-4 py-2 cursor-pointer border-r whitespace-nowrap
               bg-white hover:bg-gray-50 transition-colors

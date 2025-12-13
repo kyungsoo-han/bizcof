@@ -23,8 +23,8 @@ public abstract class BaseEntity {
     private LocalDateTime modifiedDt;
 
     @CreatedBy
-    private String createdId;
+    private Long createdId;
 
     @LastModifiedBy
-    private String modifiedId;
+    private Long modifiedId;
 }

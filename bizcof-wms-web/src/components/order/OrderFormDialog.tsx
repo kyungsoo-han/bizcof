@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { DataGrid, type DataGridRef } from '@/components/common/DataGrid';
 import type { RealGridColumn, RealGridField } from '@/types/realgrid';
 import { SearchDialog } from '@/components/common/SearchDialog';
-import { col, hiddenCol } from '@/lib/grid-helpers';
+import { col, hiddenCol, numCol } from '@/lib/grid-helpers';
 import { orderApi, type OrderCreateRequest, type OrderUpdateRequest } from '@/services/api/order';
 import { itemApi, type ItemModal } from '@/services/api/item';
 import { Calendar, Plus, Trash2 } from 'lucide-react';

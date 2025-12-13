@@ -1,7 +1,7 @@
 import ky, { type KyRequest, type KyResponse, type Options } from 'ky';
 
 // 세션 타임아웃 설정 (밀리초) - 30분
-const SESSION_TIMEOUT = 30 * 60 * 1000;
+export const SESSION_TIMEOUT = 30 * 60 * 1000;
 const LAST_ACTIVITY_KEY = 'lastActivity';
 
 // 세션 만료 이벤트
@@ -78,8 +78,8 @@ export const apiClient = ky.create({
           request.headers.set('Authorization', `Bearer ${token}`);
         }
 
-        // 로그인/인증 관련 요청이 아닌 경우 활동 시간 업데이트
-        if (!request.url.includes('/auth/')) {
+        // 로그인/인증/버전체크 요청이 아닌 경우 활동 시간 업데이트
+        if (!request.url.includes('/auth/') && !request.url.includes('/version')) {
           updateLastActivity();
         }
       },
@@ -93,9 +93,9 @@ export const apiClient = ky.create({
             return response;
           }
 
-          // 세션 만료 체크 (15분 비활동)
+          // 세션 만료 체크 (30분 비활동)
           if (isSessionExpired()) {
-            console.log('세션 만료: 15분 동안 활동이 없어 로그아웃됩니다.');
+            console.log('세션 만료: 30분 동안 활동이 없어 로그아웃됩니다.');
             forceLogout();
             return response;
           }
