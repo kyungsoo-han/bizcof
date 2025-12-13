@@ -1,4 +1,4 @@
-import { useLocation } from '@tanstack/react-router';
+import { useNavigate, useLocation } from '@tanstack/react-router';
 import { useTabStore } from '@/stores/tabStore';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,17 +11,24 @@ import {
 import { useRef, useState, useEffect } from 'react';
 
 export function TabBar() {
+  const navigate = useNavigate();
   const location = useLocation();
   const { tabs, activeTabId, setActiveTab, removeTab, closeOtherTabs, closeAllTabs } = useTabStore();
   const tabListRef = useRef<HTMLDivElement>(null);
   const [showScrollButtons, setShowScrollButtons] = useState(false);
 
-  // 홈으로 이동하면 활성 탭 제거
+  // URL과 activeTabId 동기화 (브라우저 뒤로가기/앞으로가기 지원)
   useEffect(() => {
     if (location.pathname === '/') {
       setActiveTab('');
+      return;
     }
-  }, [location.pathname, setActiveTab]);
+    // 현재 URL에 해당하는 탭 찾아서 활성화
+    const matchingTab = tabs.find((t) => t.path === location.pathname);
+    if (matchingTab && matchingTab.id !== activeTabId) {
+      setActiveTab(matchingTab.id);
+    }
+  }, [location.pathname, tabs, activeTabId, setActiveTab]);
 
   useEffect(() => {
     const checkScroll = () => {
@@ -36,15 +43,31 @@ export function TabBar() {
     return () => window.removeEventListener('resize', checkScroll);
   }, [tabs]);
 
-  const handleTabClick = (tabId: string) => {
+  const handleTabClick = (tabId: string, path: string) => {
     setActiveTab(tabId);
-    // navigate 제거 - TabContentArea가 activeTabId에 따라 렌더링
+    navigate({ to: path });
   };
 
   const handleCloseTab = (e: React.MouseEvent, tabId: string) => {
     e.stopPropagation();
+
+    // 닫을 탭을 제외한 나머지 탭들
+    const remainingTabs = tabs.filter((t) => t.id !== tabId);
+
+    // 탭 제거
     removeTab(tabId);
-    // TabContentArea가 자동으로 다음 활성 탭을 렌더링
+
+    // 닫은 탭이 활성 탭이었으면 다른 탭으로 이동
+    if (activeTabId === tabId) {
+      if (remainingTabs.length > 0) {
+        // 마지막 탭으로 이동
+        const newActiveTab = remainingTabs[remainingTabs.length - 1];
+        navigate({ to: newActiveTab.path });
+      } else {
+        // 모든 탭이 닫히면 홈으로
+        navigate({ to: '/' });
+      }
+    }
   };
 
   const scrollTabs = (direction: 'left' | 'right') => {
@@ -71,7 +94,10 @@ export function TabBar() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="mt-0">
-          <DropdownMenuItem onClick={() => closeAllTabs()}>
+          <DropdownMenuItem onClick={() => {
+              closeAllTabs();
+              navigate({ to: '/' });
+            }}>
             모두 닫기
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => activeTabId && closeOtherTabs(activeTabId)}>
@@ -101,7 +127,7 @@ export function TabBar() {
         {tabs.map((tab) => (
           <div
             key={tab.id}
-            onClick={() => handleTabClick(tab.id)}
+            onClick={() => handleTabClick(tab.id, tab.path)}
             className={`
               flex items-center gap-2 px-4 py-2 cursor-pointer border-r whitespace-nowrap
               bg-white hover:bg-gray-50 transition-colors
