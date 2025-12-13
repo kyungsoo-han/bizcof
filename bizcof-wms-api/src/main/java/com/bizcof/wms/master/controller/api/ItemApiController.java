@@ -22,10 +22,10 @@ public class ItemApiController {
     private final ItemService itemService;
 
     @GetMapping("/modal")
-      public List<ItemModalDto> getModalItems(@RequestParam("searchKeyword") String searchKeyword) {
-          List<ItemModalDto> items = itemService.getModalItems(searchKeyword); // 검색 필터 반영 가능
-          return items;
-      }
+    public BaseResponse<List<ItemModalDto>> getModalItems(@RequestParam("searchKeyword") String searchKeyword) {
+        List<ItemModalDto> items = itemService.getModalItems(searchKeyword);
+        return BaseResponse.success(items);
+    }
 
       
     @GetMapping("/{id}")

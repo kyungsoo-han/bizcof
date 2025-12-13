@@ -7,6 +7,7 @@ import com.bizcof.wms.inbound.dto.request.InboundDetailRequest;
 import com.bizcof.wms.inbound.dto.request.InboundUpdateRequest;
 import com.bizcof.wms.inbound.dto.request.search.SearchInboundRequest;
 import com.bizcof.wms.inbound.dto.response.InboundDetailResponse;
+import com.bizcof.wms.inbound.dto.response.InboundFullResponse;
 import com.bizcof.wms.inbound.dto.response.InboundHeaderResponse;
 import com.bizcof.wms.inbound.repository.InboundDetailRepository;
 import com.bizcof.wms.inbound.repository.InboundHeaderRepository;
@@ -234,10 +235,26 @@ public class InboundService {
     }
 
     /**
+     * 입고 헤더 단건 조회
+     */
+    @Transactional(readOnly = true)
+    public InboundHeaderResponse getInboundHeader(String inboundNo) {
+        return inboundQueryRepository.findInboundHeader(inboundNo);
+    }
+
+    /**
      * 입고 상세 목록 조회
      */
     @Transactional(readOnly = true)
     public List<InboundDetailResponse> getInboundDetails(String inboundNo) {
         return inboundQueryRepository.findInboundDetails(inboundNo);
+    }
+
+    /**
+     * 입고 전체 정보 조회 (헤더 + 상세)
+     */
+    @Transactional(readOnly = true)
+    public InboundFullResponse getInboundFull(String inboundNo) {
+        return inboundQueryRepository.findInboundFull(inboundNo);
     }
 }

@@ -21,9 +21,10 @@ public class ItemModalDto {
     private BigDecimal skuPerIuQty;
     private BigDecimal boxPerSkuQty;
     private BigDecimal pltPerSkuQty;
+    private String customerName;
 
     @QueryProjection
-    public ItemModalDto(Long id, String code, String name, String spec, String inventoryUnitCode, String skuUnitCode, BigDecimal skuPerIuQty, BigDecimal boxPerSkuQty, BigDecimal pltPerSkuQty) {
+    public ItemModalDto(Long id, String code, String name, String spec, String inventoryUnitCode, String skuUnitCode, BigDecimal skuPerIuQty, BigDecimal boxPerSkuQty, BigDecimal pltPerSkuQty, String customerName) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -33,5 +34,6 @@ public class ItemModalDto {
         this.skuPerIuQty = skuPerIuQty;
         this.boxPerSkuQty = boxPerSkuQty;
         this.pltPerSkuQty = pltPerSkuQty;
+        this.customerName = customerName;
     }
 }

@@ -4,6 +4,7 @@ package com.bizcof.wms.inbound.repository.querydsl;
 import com.bizcof.common.abstracts.QueryDslSupport;
 import com.bizcof.wms.inbound.dto.request.search.SearchInboundRequest;
 import com.bizcof.wms.inbound.dto.response.InboundDetailResponse;
+import com.bizcof.wms.inbound.dto.response.InboundFullResponse;
 import com.bizcof.wms.inbound.dto.response.InboundHeaderResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -60,6 +61,28 @@ public class InboundQueryRepository extends QueryDslSupport {
                 .fetch();
     }
 
+    public InboundHeaderResponse findInboundHeader(String inboundNo) {
+        return queryFactory
+                .select(
+                        Projections.fields(
+                                InboundHeaderResponse.class,
+                                inboundHeader.inboundNo,
+                                inboundHeader.inboundDate,
+                                inboundHeader.customerId,
+                                customer.code.as("customerCode"),
+                                customer.name.as("customerName"),
+                                inboundHeader.inboundType,
+                                commonCode1.commonName.as("inboundTypeName"),
+                                inboundHeader.memo
+                        ))
+                .from(inboundHeader)
+                .leftJoin(customer)
+                .on(inboundHeader.customerId.eq(customer.id))
+                .leftJoin(commonCode1)
+                .on(inboundHeader.inboundType.eq(commonCode1.commonCode).and(commonCode1.groupCode.eq("INBOUND_TYPE")))
+                .where(eq(inboundHeader.inboundNo, inboundNo))
+                .fetchOne();
+    }
 
     public List<InboundDetailResponse> findInboundDetails(String inboundNo) {
         return queryFactory
@@ -87,6 +110,12 @@ public class InboundQueryRepository extends QueryDslSupport {
                 .where(eq(inboundDetail.inboundNo, inboundNo))
                 .orderBy(inboundDetail.seqNo.asc().nullsLast())
                 .fetch();
+    }
+
+    public InboundFullResponse findInboundFull(String inboundNo) {
+        InboundHeaderResponse header = findInboundHeader(inboundNo);
+        List<InboundDetailResponse> details = findInboundDetails(inboundNo);
+        return new InboundFullResponse(header, details);
     }
 
     protected BooleanBuilder between(StringExpression path, String from, String to) {

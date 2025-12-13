@@ -27,6 +27,8 @@ THEME : Realgrid sky blue
     box-sizing: border-box !important;
     line-height: 1.5em;
     outline: none; }
+
+
   .rg-root input::-ms-clear {
     display: none; }
 
@@ -1323,139 +1325,131 @@ THEME : Realgrid sky blue
   .rg-dropdown-item:hover {
     background: #d8e3e8; }
 
+/* ===== RealGrid Calendar - Modern Style ===== */
 .rg-calendar {
-  font-size: 12px;
-  background: #FFFFFF;
-  border: 1px solid #BBC2CF;
-  box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.3); }
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden; }
+
+  /* Header */
   .rg-calendar .rg-cal-header {
-    height: 24px;
-    background: #e8eef2 !important; }
-    .rg-calendar .rg-cal-header .rg-cal-prev-month {
-      width: 20px;
-      height: 20px;
-      top: 2px !important;
-      left: 2px !important;
-      background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik01LjcsOC4zbDQuMSwzLjNjMC4zLDAuMiwwLjcsMCwwLjctMC4zVjQuN2MwLTAuMy0wLjQtMC41LTAuNy0wLjNMNS43LDcuN0M1LjUsNy44LDUuNSw4LjIsNS43LDguM3oiLz48L3N2Zz4=); }
-      .rg-calendar .rg-cal-header .rg-cal-prev-month:hover {
-        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxyZWN0IHg9IjIiIHk9IjIiIGNsYXNzPSJzdDExIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIiLz48cGF0aCBjbGFzcz0ic3QxIiBkPSJNNS4zLDguM2w0LjEsMy4zYzAuMywwLjIsMC43LDAsMC43LTAuM1Y0LjdjMC0wLjMtMC40LTAuNS0wLjctMC4zTDUuMyw3LjdDNS4xLDcuOCw1LjEsOC4yLDUuMyw4LjN6Ii8+PHBhdGggY2xhc3M9InN0MSIgZD0iTTEzLDJjMC42LDAsMSwwLjQsMSwxdjEwYzAsMC42LTAuNCwxLTEsMUgzYy0wLjYsMC0xLTAuNC0xLTFWM2MwLTAuNiwwLjQtMSwxLTFIMTMgTTEzLDFIM0MxLjksMSwxLDEuOSwxLDN2MTBjMCwxLjEsMC45LDIsMiwyaDEwYzEuMSwwLDItMC45LDItMlYzQzE1LDEuOSwxNC4xLDEsMTMsMUwxMywxeiIvPjwvc3ZnPg==); }
-      .rg-calendar .rg-cal-header .rg-cal-prev-month:active {
-        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxyZWN0IHg9IjIiIHk9IjIiIGNsYXNzPSJzdDAiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIvPjxnPjxwYXRoIGNsYXNzPSJzdDYiIGQ9Ik01LjMsOC4zbDQuMSwzLjNjMC4zLDAuMiwwLjcsMCwwLjctMC4zVjQuN2MwLTAuMy0wLjQtMC41LTAuNy0wLjNMNS4zLDcuN0M1LjEsNy44LDUuMSw4LjIsNS4zLDguM3oiLz48cGF0aCBjbGFzcz0ic3Q2IiBkPSJNMTMsMmMwLjYsMCwxLDAuNCwxLDF2MTBjMCwwLjYtMC40LDEtMSwxSDNjLTAuNiwwLTEtMC40LTEtMVYzYzAtMC42LDAuNC0xLDEtMUgxMyBNMTMsMUgzQzEuOSwxLDEsMS45LDEsM3YxMGMwLDEuMSwwLjksMiwyLDJoMTBjMS4xLDAsMi0wLjksMi0yVjNDMTUsMS45LDE0LjEsMSwxMywxTDEzLDF6Ii8+PC9nPjwvc3ZnPg==); }
+    height: 40px;
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+
+    /* Navigation Buttons */
+    .rg-calendar .rg-cal-header .rg-cal-prev-month,
     .rg-calendar .rg-cal-header .rg-cal-next-month {
-      width: 20px;
-      height: 20px;
-      top: 2px !important;
-      right: 2px !important;
-      background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xMC4zLDguM2wtNC4xLDMuM2MtMC4zLDAuMi0wLjcsMC0wLjctMC4zVjQuN2MwLTAuMywwLjQtMC41LDAuNy0wLjNsNC4xLDMuM0MxMC41LDcuOCwxMC41LDguMiwxMC4zLDguM3oiLz48L3N2Zz4=); }
-      .rg-calendar .rg-cal-header .rg-cal-next-month:hover {
-        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxyZWN0IHg9IjIiIHk9IjIiIGNsYXNzPSJzdDExIiB3aWR0aD0iMTIiIGhlaWdodD0iMTIiLz48cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTMsMmMwLjYsMCwxLDAuNCwxLDF2MTBjMCwwLjYtMC40LDEtMSwxSDNjLTAuNiwwLTEtMC40LTEtMVYzYzAtMC42LDAuNC0xLDEtMUgxMyBNMTMsMUgzQzEuOSwxLDEsMS45LDEsM3YxMGMwLDEuMSwwLjksMiwyLDJoMTBjMS4xLDAsMi0wLjksMi0yVjNDMTUsMS45LDE0LjEsMSwxMywxTDEzLDF6Ii8+PHBhdGggY2xhc3M9InN0MSIgZD0iTTEwLjcsOC4zbC00LjEsMy4zYy0wLjMsMC4yLTAuNywwLTAuNy0wLjNWNC43YzAtMC4zLDAuNC0wLjUsMC43LTAuM2w0LjEsMy4zQzEwLjksNy44LDEwLjksOC4yLDEwLjcsOC4zeiIvPjwvc3ZnPg==); }
-      .rg-calendar .rg-cal-header .rg-cal-next-month:active {
-        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxnPjxwYXRoIGNsYXNzPSJzdDYiIGQ9Ik0xMywyYzAuNiwwLDEsMC40LDEsMXYxMGMwLDAuNi0wLjQsMS0xLDFIM2MtMC42LDAtMS0wLjQtMS0xVjNjMC0wLjYsMC40LTEsMS0xSDEzIE0xMywxSDNDMS45LDEsMSwxLjksMSwzdjEwYzAsMS4xLDAuOSwyLDIsMmgxMGMxLjEsMCwyLTAuOSwyLTJWM0MxNSwxLjksMTQuMSwxLDEzLDFMMTMsMXoiLz48cGF0aCBjbGFzcz0ic3Q2IiBkPSJNMTAuNyw4LjNsLTQuMSwzLjNjLTAuMywwLjItMC43LDAtMC43LTAuM1Y0LjdjMC0wLjMsMC40LTAuNSwwLjctMC4zbDQuMSwzLjNDMTAuOSw3LjgsMTAuOSw4LjIsMTAuNyw4LjN6Ii8+PC9nPjwvc3ZnPg==); }
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      transition: background 0.2s; }
+    .rg-calendar .rg-cal-header .rg-cal-prev-month {
+      top: 6px !important;
+      left: 8px !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center; }
+    .rg-calendar .rg-cal-header .rg-cal-next-month {
+      top: 6px !important;
+      right: 8px !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center; }
+    .rg-calendar .rg-cal-header .rg-cal-prev-month:hover,
+    .rg-calendar .rg-cal-header .rg-cal-next-month:hover {
+      background-color: #e2e8f0; }
+
+    /* Today Button - Hidden */
     .rg-calendar .rg-cal-header .rg-cal-today-button {
-      padding: 0 4px;
-      font-size: 12px;
-      border: 1px solid #BBC2CF;
-      color: #4f5a6f;
-      border-radius: 3px;
-      cursor: pointer;
-      box-sizing: border-box;
-      top: 3px !important;
-      right: 24px !important; }
-      .rg-calendar .rg-cal-header .rg-cal-today-button:hover {
-        border: 1px solid #4F80B1;
-        background: #4F80B1;
-        color: #FFFFFF; }
-    .rg-calendar .rg-cal-header .rg-cal-yearmonth .rg-cal-year {
-      cursor: default;
-      top: 5px; }
+      display: none !important; }
+
+    /* Year/Month Display */
+    .rg-calendar .rg-cal-header .rg-cal-yearmonth .rg-cal-year,
     .rg-calendar .rg-cal-header .rg-cal-yearmonth .rg-cal-month {
-      cursor: pointer;
-      top: 5px; }
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e293b;
+      cursor: default;
+      top: 11px; }
+
+  /* Days Table */
   .rg-calendar .rg-cal-days-table {
-    background: #FFFFFF; }
+    background: #ffffff;
+    padding: 8px; }
+
+    /* Week Headers */
     .rg-calendar .rg-cal-days-table .rg-cal-weeks {
-      color: #4f5a6f;
-      font-size: 12px;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
       cursor: default; }
+
+    /* Days */
     .rg-calendar .rg-cal-days-table .rg-cal-days {
-      font-size: 12px;
+      font-size: 13px;
       text-align: center; }
+
       .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-week-year-week {
-        font-size: 10px; }
+        font-size: 10px;
+        color: #94a3b8; }
+
       .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day {
         cursor: pointer;
-        width: 24px;
-        height: 24px;
-        font-size: 12px;
-        border-radius: 50%;
-        color: #4f5a6f; }
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 13px;
+        border-radius: 6px;
+        color: #334155;
+        transition: all 0.15s; }
+
         .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day:hover {
-          border: 1px solid #b7ccd6;
-          box-sizing: border-box; }
+          background: #f1f5f9;
+          border: none; }
+
+        /* Sunday */
         .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-week-sun {
-          color: #EB394F; }
+          color: #ef4444; }
+
+        /* Saturday */
         .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-week-sat {
-          color: #1772B0; }
-        .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-prev-day {
-          color: #acb5c4;
-          background: #FFFFFF;
-          border: none; }
+          color: #3b82f6; }
+
+        /* Previous/Next Month Days */
+        .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-prev-day,
         .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-next-day {
-          color: #acb5c4;
-          background: #FFFFFF;
+          color: #cbd5e1;
+          background: transparent;
           border: none; }
-          .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-next-day:hover {
-            border: 1px solid #f2f5f7;
-            box-sizing: border-box; }
+        .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-prev-day:hover,
+        .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-next-day:hover {
+          background: #f8fafc;
+          border: none; }
+
+        /* Today */
         .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-today {
-          background: #d9c18e; }
+          background: #e0f2fe;
+          color: #0284c7;
+          font-weight: 600; }
+
+        /* Selected Day */
         .rg-calendar .rg-cal-days-table .rg-cal-days .rg-cal-day.rg-cal-focusday {
-          background: #4F80B1;
-          color: #FFFFFF; }
+          background: #3b82f6;
+          color: #ffffff;
+          font-weight: 500; }
+
+  /* Bottom Buttons - Hidden for simplicity */
   .rg-calendar .rg-cal-buttons {
-    height: 31px; }
-    .rg-calendar .rg-cal-buttons .rg-cal-delete-button {
-      padding: 2px;
-      font-size: 12px;
-      border: 1px solid transparent;
-      border-radius: 3px;
-      line-height: 18px;
-      padding-left: 18px;
-      background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxnPjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zLDE1aDEwVjYuNUgzVjE1eiBNOS41LDljMC0wLjMsMC4yLTAuNSwwLjUtMC41czAuNSwwLjIsMC41LDAuNXY0YzAsMC4zLTAuMiwwLjUtMC41LDAuNVM5LjUsMTMuMyw5LjUsMTNWOXogTTcuNSw5YzAtMC4zLDAuMi0wLjUsMC41LTAuNVM4LjUsOC43LDguNSw5djRjMCwwLjMtMC4yLDAuNS0wLjUsMC41UzcuNSwxMy4zLDcuNSwxM1Y5eiBNNS41LDljMC0wLjMsMC4yLTAuNSwwLjUtMC41UzYuNSw4LjcsNi41LDl2NGMwLDAuMy0wLjIsMC41LTAuNSwwLjVTNS41LDEzLjMsNS41LDEzVjl6Ii8+PHBhdGggY2xhc3M9InN0MSIgZD0iTTEwLDNWMlYxSDlIN0g2djF2MUgydjFoMXYyaDEwVjRoMVYzSDEweiBNNywyaDJ2MUg3VjJ6Ii8+PC9nPjwvc3ZnPg==) no-repeat 2px center;
-      background-size: 14px;
-      cursor: pointer; }
-      .rg-calendar .rg-cal-buttons .rg-cal-delete-button:hover {
-        border: 1px solid #aaa;
-        background-color: #fff;
-        text-decoration: underline; }
-    .rg-calendar .rg-cal-buttons .rg-cal-cancel-button {
-      padding: 2px;
-      font-size: 12px;
-      border: 1px solid transparent;
-      border-radius: 3px;
-      line-height: 18px;
-      cursor: pointer;
-      padding-left: 18px;
-      background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik05LjQsOGw0LjMtNC4zYzAuNC0wLjQsMC40LTEsMC0xLjRzLTEtMC40LTEuNCwwTDgsNi42TDMuNywyLjNjLTAuNC0wLjQtMS0wLjQtMS40LDBzLTAuNCwxLDAsMS40TDYuNiw4bC00LjMsNC4zYy0wLjQsMC40LTAuNCwxLDAsMS40QzIuNSwxMy45LDIuNywxNCwzLDE0czAuNS0wLjEsMC43LTAuM0w4LDkuNGw0LjMsNC4zYzAuMiwwLjIsMC41LDAuMywwLjcsMC4zczAuNS0wLjEsMC43LTAuM2MwLjQtMC40LDAuNC0xLDAtMS40TDkuNCw4eiIvPjwvc3ZnPg==) no-repeat 2px center;
-      background-size: 14px; }
-      .rg-calendar .rg-cal-buttons .rg-cal-cancel-button:hover {
-        border: 1px solid #aaa;
-        background-color: #fff;
-        text-decoration: underline; }
-    .rg-calendar .rg-cal-buttons .rg-cal-save-button {
-      padding: 2px;
-      font-size: 12px;
-      border: 1px solid transparent;
-      border-radius: 3px;
-      line-height: 18px;
-      cursor: pointer;
-      padding-left: 18px;
-      background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xMy42LDMuOGwtMC45LDAuOWMwLDAsMCwwLDAsMEw4LDkuNGwtMi0yQzUuNyw3LDUuMSw3LDQuOCw3LjRzLTAuMywwLjksMCwxLjJsMi42LDIuNmMwLjIsMC4yLDAuNCwwLjMsMC42LDAuM3MwLjQtMC4xLDAuNi0wLjNsNC41LTQuNWMwLjEsMC40LDAuMiwwLjgsMC4yLDEuMmMwLDIuOS0yLjQsNS4yLTUuMiw1LjJTMi44LDEwLjksMi44LDhTNS4xLDIuOCw4LDIuOGMxLjIsMCwyLjMsMC40LDMuMSwxbDEuMi0xLjJDMTEuMiwxLjYsOS43LDEsOCwxQzQuMSwxLDEsNC4xLDEsOHMzLjEsNyw3LDdzNy0zLjEsNy03QzE1LDYuNCwxNC41LDUsMTMuNiwzLjh6Ii8+PC9zdmc+) no-repeat 2px center;
-      background-size: 14px; }
-      .rg-calendar .rg-cal-buttons .rg-cal-save-button:hover {
-        border: 1px solid #aaa;
-        background-color: #fff;
-        text-decoration: underline; }
+    display: none !important; }
 
 .rg-cal-next-year {
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTMiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDEzOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGRkZGRjt9LnN0MXtmaWxsOiM0RjVBNkY7fS5zdDJ7ZmlsbDojNjlCNjMxO30uc3Qze2ZpbGw6I0ZGQ0MwMjt9LnN0NHtmaWxsOiM5RTcyMTU7fS5zdDV7ZmlsbDojNDI3N0FEO30uc3Q2e2ZpbGw6IzNCMkYxNDt9LnN0N3tmaWxsOiNCM0IzQjM7fS5zdDh7ZmlsbDojQjIzQTNBO30uc3Q5e2ZpbGw6IzM0NkJBOTt9LnN0MTB7ZmlsbDojMTcxNzE3O30uc3QxMXtmaWxsOiNDN0Q3REY7fS5zdDEye2ZpbGw6I0YzRDZBMTt9LnN0MTN7ZmlsbDojRTU2NjE1O308L3N0eWxlPjxwb2x5Z29uIGNsYXNzPSJzdDEiIHBvaW50cz0iMTEsOS41IDUsOS41IDgsNi41ICIvPjwvc3ZnPg==);

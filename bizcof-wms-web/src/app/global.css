@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --radius: 0.5rem;
+    --chart-1: 216 28% 44%;
+    --chart-2: 194 74% 63%;
+    --chart-3: 318 63% 81%;
+    --chart-4: 213 59% 73%;
+    --chart-5: 187 71% 79%;
+    --chart-6: 272 48% 79%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html,
+  body,
+  #root {
+    @apply h-full;
+    font-size: 14px;
+  }
+
+  /* 메인 메뉴에서 dialog open 후 close하면 click 할 수 없는 문제때문 */
+  body {
+    pointer-events: auto !important;
+  }
+
+  pre {
+    @apply font-sans;
+    @apply break-all;
+  }
+
+  /* Firefox 브라우저용 사용자 정의 스타일 */
+  [type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* RealGrid 스타일 */
+.readonly-cell {
+  background-color: #f0f0f0;  /* 회색 배경 */
+}
+
+/* 삭제된 행 스타일 */
+.deleted-row td {
+  background-color: #f8d7da !important;  /* 빨간색 배경 */
+  text-decoration: line-through;         /* 취소선 */
+  color: #6c757d !important;             /* 회색 글자 */
+}
+
+.deleted-row .realgrid-cell {
+  background-color: #f8d7da !important;  /* 빨간색 배경 */
+  color: #6c757d !important;             /* 회색 글자 */
+  text-decoration: line-through;         /* 취소선 */
+}
+
+/* TreeGrid 트리 아이콘과 데이터 사이 간격 */
+.rg-tree-leaf {
+  margin-right: 8px;
+}
+
+.rg-tree-expanded,
+.rg-tree-collapsed {
+  margin-right: 6px;
+}
+
+.rg-tree-expander {
+  margin-right: 4px;
+}
+
+.rg-tree-renderer {
+  padding-left: 4px !important;
+}

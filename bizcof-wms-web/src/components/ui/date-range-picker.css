@@ -1,0 +1,28 @@
+/* 한국어 날짜 포맷을 위한 react-date-range 스타일 오버라이드 */
+
+/* 선택된 날짜 표시 영역 전체 숨김 */
+.rdrDateDisplayWrapper {
+  display: none !important;
+}
+
+.rdrDateInput {
+  display: none !important;
+}
+
+.rdrDateDisplayItem {
+  display: none !important;
+}
+
+.rdrDateDisplayItemActive {
+  display: none !important;
+}
+
+/* 월/년 선택 영역은 monthDisplayFormat으로 처리되므로 그대로 유지 */
+.rdrMonthAndYearPickers {
+  /* monthDisplayFormat="yyyy년 MM월"로 이미 처리됨 */
+}
+
+
+.rdrMonthAndYearWrapper{
+  padding-top :0;
+}

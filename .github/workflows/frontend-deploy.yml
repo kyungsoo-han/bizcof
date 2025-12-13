@@ -1,0 +1,94 @@
+# 📦 GitHub Actions Workflow: Frontend Build and Deploy
+# ------------------------------------------------------------------------------
+# 프론트엔드(React + Vite) 빌드 및 배포 워크플로우
+# master/develop 브랜치에 bizcof-wms-web 경로 변경 시 자동 실행
+
+name: Frontend Deploy
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - 'bizcof-wms-web/**'
+      - '.github/workflows/frontend-deploy.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '배포 환경 (dev 또는 prod)'
+        required: true
+        default: 'dev'
+
+env:
+  NODE_VERSION: '20'
+  TARGET_SERVER_IP_DEV: 180.69.179.62
+  TARGET_SERVER_IP_PROD: 180.69.179.62
+  REMOTE_USER: root
+  DEPLOY_PATH: /var/www/wms-web
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    env:
+      ENV_PROFILE: ${{ github.event.inputs.environment || 'dev' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'bizcof-wms-web/package-lock.json'
+
+      - name: Install dependencies
+        run: |
+          cd bizcof-wms-web
+          npm ci
+
+      - name: Build for production
+        run: |
+          cd bizcof-wms-web
+          npm run build
+          ls -la dist/
+
+      - name: Determine server IP by profile
+        run: |
+          if [[ "$ENV_PROFILE" == "prod" ]]; then
+            echo "SERVER_IP=$TARGET_SERVER_IP_PROD" >> $GITHUB_ENV
+          else
+            echo "SERVER_IP=$TARGET_SERVER_IP_DEV" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy to Server via SCP
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+
+          # 원격 서버에 배포 디렉토리 생성
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$SERVER_IP \
+            "mkdir -p $DEPLOY_PATH"
+
+          # 기존 파일 삭제 후 새 파일 전송
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$SERVER_IP \
+            "rm -rf $DEPLOY_PATH/*"
+
+          # SCP를 통해 빌드 결과물 전송
+          scp -o StrictHostKeyChecking=no -i private_key.pem -r bizcof-wms-web/dist/* \
+            $REMOTE_USER@$SERVER_IP:$DEPLOY_PATH/
+
+          # 배포 결과 확인
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$SERVER_IP \
+            "ls -la $DEPLOY_PATH/"
+
+          rm -f private_key.pem
+
+      - name: Deployment complete
+        run: |
+          echo "✅ Frontend deployed successfully to $SERVER_IP"
+          echo "📁 Deploy path: $DEPLOY_PATH"

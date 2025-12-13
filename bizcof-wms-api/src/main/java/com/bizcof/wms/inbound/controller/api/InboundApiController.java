@@ -5,6 +5,7 @@ import com.bizcof.wms.inbound.dto.request.InboundCreateRequest;
 import com.bizcof.wms.inbound.dto.request.InboundUpdateRequest;
 import com.bizcof.wms.inbound.dto.request.search.SearchInboundRequest;
 import com.bizcof.wms.inbound.dto.response.InboundDetailResponse;
+import com.bizcof.wms.inbound.dto.response.InboundFullResponse;
 import com.bizcof.wms.inbound.dto.response.InboundHeaderResponse;
 import com.bizcof.wms.inbound.service.InboundService;
 import com.bizcof.wms.master.dto.request.ItemCreateRequest;
@@ -43,6 +44,12 @@ public class InboundApiController {
     public BaseResponse<List<InboundHeaderResponse>> getInboundHeaders(SearchInboundRequest request) {
         System.out.println("request = " + request);
         return BaseResponse.success(inboundService.getInboundHeaders(request));
+    }
+
+    @GetMapping("/{inboundNo}")
+    public BaseResponse<InboundFullResponse> getInboundFull(@PathVariable String inboundNo) {
+        System.out.println("inboundNo = " + inboundNo);
+        return BaseResponse.success(inboundService.getInboundFull(inboundNo));
     }
 
     @GetMapping("/detail/{inboundNo}")

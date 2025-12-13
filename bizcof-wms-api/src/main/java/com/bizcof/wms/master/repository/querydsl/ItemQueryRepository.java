@@ -77,12 +77,14 @@ public class ItemQueryRepository {
                         item.code,
                         item.name,
                         item.spec,
-                        item.skuUnitCode,
                         item.inventoryUnitCode,
+                        item.skuUnitCode,
                         item.skuPerIuQty,
                         item.boxPerSkuQty,
-                        item.pltPerSkuQty))
+                        item.pltPerSkuQty,
+                        customer.name))
                 .from(item)
+                .leftJoin(item.customer, customer)
                 .where(containsLikeOr(List.of(item.code, item.name), searchKeyword))
                 .fetch();
     }
