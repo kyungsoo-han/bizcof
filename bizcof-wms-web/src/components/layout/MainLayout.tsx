@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from '@tanstack/react-router';
+import { Outlet, useNavigate, useLocation } from '@tanstack/react-router';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
 import { AppHeader } from './AppHeader';
@@ -12,6 +12,7 @@ import { VersionCheckAlert } from '@/features/version-check';
 export function MainLayout() {
   const { isAuthenticated, checkAuth } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const { tabs } = useTabStore();
 
   useEffect(() => {
@@ -22,6 +23,13 @@ export function MainLayout() {
       navigate({ to: '/login' });
     }
   }, [isAuthenticated, checkAuth, navigate]);
+
+  // 탭이 모두 닫혔는데 홈이 아닌 경우 홈으로 이동
+  useEffect(() => {
+    if (tabs.length === 0 && location.pathname !== '/') {
+      navigate({ to: '/' });
+    }
+  }, [tabs.length, location.pathname, navigate]);
 
   // 인증되지 않은 경우 아무것도 렌더링하지 않음
   if (!isAuthenticated) {
