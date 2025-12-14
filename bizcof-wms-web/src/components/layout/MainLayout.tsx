@@ -17,21 +17,23 @@ export function MainLayout() {
 
   useEffect(() => {
     checkAuth();
+  }, [checkAuth]);
 
-    // 인증되지 않은 경우 로그인 페이지로 리다이렉트
+  // 인증되지 않은 경우 로그인 페이지로 리다이렉트
+  useEffect(() => {
     if (!isAuthenticated) {
       navigate({ to: '/login' });
     }
-  }, [isAuthenticated, checkAuth, navigate]);
+  }, [isAuthenticated, navigate]);
 
   // 탭이 모두 닫혔는데 홈이 아닌 경우 홈으로 이동
   useEffect(() => {
-    if (tabs.length === 0 && location.pathname !== '/') {
+    if (isAuthenticated && tabs.length === 0 && location.pathname !== '/') {
       navigate({ to: '/' });
     }
-  }, [tabs.length, location.pathname, navigate]);
+  }, [isAuthenticated, tabs.length, location.pathname, navigate]);
 
-  // 인증되지 않은 경우 아무것도 렌더링하지 않음
+  // 인증되지 않은 경우 렌더링하지 않음 (리다이렉트 대기)
   if (!isAuthenticated) {
     return null;
   }
