@@ -240,11 +240,39 @@ export function useRealTreeGrid({
     }
   };
 
-  // 플랫 데이터 설정 후 트리로 변환
+  // 플랫 데이터를 트리 구조로 변환하여 설정
   const setFlatData = (data: any[], treeFieldName: string = treeField, parentFieldName: string = parentField) => {
-    if (dataProviderRef.current) {
-      dataProviderRef.current.setRows(data, treeFieldName, false, '', parentFieldName);
-    }
+    if (!dataProviderRef.current || data.length === 0) return;
+
+    // 플랫 데이터를 트리 구조로 변환
+    const buildTreeData = (items: any[], parentValue: string = ''): any[] => {
+      const result: any[] = [];
+      for (const item of items) {
+        const itemParent = (item[parentFieldName] ?? '').toString().trim();
+        if (itemParent === parentValue.toString().trim()) {
+          const children = buildTreeData(items, item[treeFieldName]);
+          result.push(children.length > 0 ? { ...item, children } : { ...item });
+        }
+      }
+      return result;
+    };
+
+    const treeData = buildTreeData(data);
+    dataProviderRef.current.clearRows();
+
+    // 재귀적으로 트리 행 추가
+    const addTreeRows = (items: any[], parentRowId: number = -1) => {
+      for (const item of items) {
+        const { children, ...rowData } = item;
+        const hasChildren = children && children.length > 0;
+        const newRowId = dataProviderRef.current.addChildRow(parentRowId, rowData, -1, hasChildren);
+        if (hasChildren) {
+          addTreeRows(children, newRowId);
+        }
+      }
+    };
+
+    addTreeRows(treeData);
   };
 
   // 데이터 가져오기

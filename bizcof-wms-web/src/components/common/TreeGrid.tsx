@@ -37,6 +37,9 @@ export interface TreeGridProps {
 
   /** 행 더블클릭 시 호출 */
   onRowDoubleClick?: (rowData: any) => void;
+
+  /** 포커스된 행이 변경될 때 호출 */
+  onFocusedRowChanged?: (rowData: any) => void;
 }
 
 /**
@@ -93,6 +96,7 @@ export const TreeGrid = forwardRef<TreeGridRef, TreeGridProps>(
       parentField = 'parentId',
       onRowClick,
       onRowDoubleClick,
+      onFocusedRowChanged,
     },
     ref
   ) => {
@@ -166,10 +170,9 @@ export const TreeGrid = forwardRef<TreeGridRef, TreeGridProps>(
       if (grid.isReady) {
         if (data.length > 0) {
           grid.setFlatData(data, treeField, parentField);
-          // 기본적으로 모든 노드 펼치기
-          setTimeout(() => grid.expandAll(), 100);
+          // 데이터 로드 후 모든 노드 펼치기
+          setTimeout(() => grid.expandAll(), 50);
         } else {
-          // 데이터가 없으면 그리드 초기화
           grid.dataProvider?.clearRows();
         }
       }
@@ -198,8 +201,18 @@ export const TreeGrid = forwardRef<TreeGridRef, TreeGridProps>(
             }
           };
         }
+
+        // FocusedRowChanged 이벤트
+        if (onFocusedRowChanged) {
+          grid.treeView.onCurrentRowChanged = (_: any, oldRow: number, newRow: number) => {
+            if (newRow >= 0 && grid.dataProvider) {
+              const rowData = grid.dataProvider.getJsonRow(newRow);
+              onFocusedRowChanged(rowData);
+            }
+          };
+        }
       }
-    }, [grid.isReady, grid.treeView, grid.dataProvider, onRowClick, onRowDoubleClick]);
+    }, [grid.isReady, grid.treeView, grid.dataProvider, onRowClick, onRowDoubleClick, onFocusedRowChanged]);
 
     // className에서 높이 추출 (h-[xxx] 패턴)
     const heightMatch = className?.match(/h-\[(\d+)px\]/);
