@@ -161,25 +161,21 @@ function UserManage() {
               <CardTitle>사용자 목록 (총 {users?.length || 0}명)</CardTitle>
             </div>
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleNewUser}>
-                <Plus className="h-4 w-4 mr-2" />
+              <Button variant="outline"  size="sm" onClick={handleNewUser}>
+                <Plus className="h-4 w-4 mr-2 text-green-500" />
                 신규 등록
               </Button>
               <Button variant="outline" size="sm" onClick={handleEditUser}>
-                <Pencil className="h-4 w-4 mr-2" />
+                <Pencil className="h-4 w-4 mr-2 text-blue-500" />
                 수정
               </Button>
               <Button variant="outline" size="sm" onClick={handleResetPassword}>
-                <KeyRound className="h-4 w-4 mr-2" />
+                <KeyRound className="h-4 w-4 mr-2 text-blue-500" />
                 비밀번호 초기화
               </Button>
-              <Button variant="destructive" size="sm" onClick={handleDeleteUser}>
-                <Trash2 className="h-4 w-4 mr-2" />
+              <Button variant="outline" size="sm" onClick={handleDeleteUser}>
+                <Trash2 className="h-4 w-4 mr-2 text-red-500"  />
                 삭제
-              </Button>
-              <Button onClick={handleExport} variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Excel
               </Button>
             </div>
           </div>

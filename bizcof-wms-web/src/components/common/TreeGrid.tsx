@@ -214,9 +214,15 @@ export const TreeGrid = forwardRef<TreeGridRef, TreeGridProps>(
       }
     }, [grid.isReady, grid.treeView, grid.dataProvider, onRowClick, onRowDoubleClick, onFocusedRowChanged]);
 
-    // className에서 높이 추출 (h-[xxx] 패턴)
-    const heightMatch = className?.match(/h-\[(\d+)px\]/);
-    const height = heightMatch ? `${heightMatch[1]}px` : '400px';
+    // className에서 높이 추출
+    const getHeight = () => {
+      if (!className) return '400px';
+      if (className.includes('h-full')) return '100%';
+      const pxMatch = className.match(/h-\[(\d+)px\]/);
+      if (pxMatch) return `${pxMatch[1]}px`;
+      return '400px';
+    };
+    const height = getHeight();
 
     // 컬럼 표시/숨김 핸들러
     const handleColumnVisibilityChange = (columnName: string, visible: boolean) => {

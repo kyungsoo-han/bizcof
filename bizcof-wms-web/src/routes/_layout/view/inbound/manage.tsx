@@ -147,7 +147,7 @@ function InboundManage() {
                   setIsFormDialogOpen(true);
                 }}
               >
-                <Plus className="h-4 w-4 mr-2 text-blue-500" />
+                <Plus className="h-4 w-4 mr-2 text-green-500" />
                 입고 등록
               </Button>
               <Button
@@ -161,7 +161,7 @@ function InboundManage() {
                   }
                 }}
               >
-                <Pencil className="h-4 w-4 mr-2 text-amber-500" />
+                <Pencil className="h-4 w-4 mr-2 text-blue-500" />
                 입고 수정
               </Button>
               <Button

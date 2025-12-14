@@ -289,12 +289,22 @@ export const DataGrid = forwardRef<DataGridRef, DataGridProps>(
       setColumnSettings(grid.getColumnSettings());
     };
 
+    // className에서 높이 추출
+    const getHeight = () => {
+      if (!className) return '500px';
+      if (className.includes('h-full')) return '100%';
+      const pxMatch = className.match(/h-\[(\d+)px\]/);
+      if (pxMatch) return `${pxMatch[1]}px`;
+      return '500px';
+    };
+    const height = getHeight();
+
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 h-full">
         <div
           ref={grid.containerRef}
           className={cn('w-full border rounded-md', className)}
-          style={{ height: '500px' }}
+          style={{ height }}
         />
 
         {/* 컬럼 설정 다이얼로그 */}

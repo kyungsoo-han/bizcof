@@ -10,6 +10,7 @@ import { TreeGrid, type TreeGridRef } from '@/components/common/TreeGrid';
 import { col, hiddenCol, numCol } from '@/lib/grid-helpers';
 import { menuApi, type MenuItem } from '@/services/api/menu';
 import { Plus, Trash2, Save, FolderTree, ChevronDown, ChevronRight } from 'lucide-react';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 
 export const Route = createFileRoute('/_layout/view/system/menu')({
   component: MenuManage,
@@ -138,14 +139,14 @@ function MenuManage() {
     setIsNewMode(false);
   };
 
-  // 신규 메뉴 추가
-  const handleNewMenu = () => {
+  // 최상위 메뉴 추가
+  const handleNewRootMenu = () => {
     setIsNewMode(true);
     setSelectedMenu(null);
     setFormData({
       ...emptyFormData,
-      parentCd: selectedMenu?.menuCd || '',
-      level: selectedMenu ? (selectedMenu.level || 0) + 1 : 1,
+      parentCd: '',
+      level: 1,
     });
   };
 
@@ -159,8 +160,19 @@ function MenuManage() {
     setFormData({
       ...emptyFormData,
       parentCd: selectedMenu.menuCd,
-      level: (selectedMenu.level || 0) + 1,
+      level: Number(selectedMenu.level || 1) + 1,
     });
+  };
+
+  // 상위메뉴 변경 시 레벨 자동 계산
+  const handleParentChange = (parentCd: string) => {
+    if (!parentCd || parentCd === '_none_') {
+      setFormData(prev => ({ ...prev, parentCd: '', level: 1 }));
+    } else {
+      const parentMenu = menus.find(m => m.menuCd === parentCd);
+      const newLevel = parentMenu ? Number(parentMenu.level || 1) + 1 : 2;
+      setFormData(prev => ({ ...prev, parentCd, level: newLevel }));
+    }
   };
 
   // 저장
@@ -193,203 +205,212 @@ function MenuManage() {
   };
 
   return (
-    <div className="flex gap-4 h-[calc(100vh-220px)]">
-      {/* 왼쪽: 트리 그리드 */}
-      <Card className="w-[500px] flex flex-col">
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <FolderTree className="h-5 w-5" />
-              메뉴 트리
-            </CardTitle>
-            <div className="flex gap-1">
-              <Button size="sm" variant="outline" onClick={() => treeGridRef.current?.expandAll()}>
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="outline" onClick={() => treeGridRef.current?.collapseAll()}>
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="flex-1 pt-2">
-          {error ? (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-              메뉴 데이터를 불러올 수 없습니다
-            </div>
-          ) : (
-            <TreeGrid
-              ref={treeGridRef}
-              columns={columns}
-              data={menus}
-              treeField="menuCd"
-              parentField="parentCd"
-              className="h-full"
-              onFocusedRowChanged={handleFocusedRowChanged}
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      {/* 오른쪽: 상세 입력 영역 */}
-      <Card className="flex-1 flex flex-col">
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle>
-              {isNewMode ? '메뉴 등록' : selectedMenu ? '메뉴 수정' : '메뉴 상세'}
-            </CardTitle>
-            <div className="flex gap-2">
-              <Button size="sm" onClick={handleNewMenu}>
-                <Plus className="h-4 w-4 mr-1" />
-                신규
-              </Button>
-              <Button size="sm" variant="outline" onClick={handleAddChildMenu} disabled={!selectedMenu}>
-                <Plus className="h-4 w-4 mr-1" />
-                하위 추가
-              </Button>
-              <Button size="sm" variant="default" onClick={handleSave} disabled={!formData.menuCd}>
-                <Save className="h-4 w-4 mr-1" />
-                저장
-              </Button>
-              <Button size="sm" variant="destructive" onClick={handleDelete} disabled={!selectedMenu || isNewMode}>
-                <Trash2 className="h-4 w-4 mr-1" />
-                삭제
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="flex-1 pt-4">
-          {(selectedMenu || isNewMode) ? (
-            <div className="grid grid-cols-2 gap-4">
-              {/* 메뉴코드 */}
-              <div className="space-y-2">
-                <Label htmlFor="menuCd">메뉴코드 *</Label>
-                <Input
-                  id="menuCd"
-                  value={formData.menuCd}
-                  onChange={(e) => handleFormChange('menuCd', e.target.value)}
-                  placeholder="메뉴코드 입력"
-                  disabled={!isNewMode}
+    <div className="h-[calc(100vh-220px)]">
+      <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
+        {/* 왼쪽: 트리 그리드 */}
+        <ResizablePanel defaultSize={50} minSize={25} maxSize={60}>
+          <Card className="h-full border-0 rounded-none">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <FolderTree className="h-5 w-5" />
+                  메뉴 트리
+                </CardTitle>
+                <div className="flex gap-1">
+                  <Button size="sm" variant="outline" onClick={() => treeGridRef.current?.expandAll()}>
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={() => treeGridRef.current?.collapseAll()}>
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="h-[calc(100%-60px)] pt-2">
+              {error ? (
+                <div className="flex items-center justify-center h-full text-muted-foreground">
+                  메뉴 데이터를 불러올 수 없습니다
+                </div>
+              ) : (
+                <TreeGrid
+                  ref={treeGridRef}
+                  columns={columns}
+                  data={menus}
+                  treeField="menuCd"
+                  parentField="parentCd"
+                  className="h-full"
+                  onFocusedRowChanged={handleFocusedRowChanged}
                 />
-              </div>
+              )}
+            </CardContent>
+          </Card>
+        </ResizablePanel>
 
-              {/* 메뉴명 */}
-              <div className="space-y-2">
-                <Label htmlFor="menuNm">메뉴명 *</Label>
-                <Input
-                  id="menuNm"
-                  value={formData.menuNm}
-                  onChange={(e) => handleFormChange('menuNm', e.target.value)}
-                  placeholder="메뉴명 입력"
-                />
-              </div>
+        <ResizableHandle withHandle />
 
-              {/* 상위메뉴 */}
-              <div className="space-y-2">
-                <Label htmlFor="parentCd">상위메뉴</Label>
-                <Select
-                  value={formData.parentCd || '_none_'}
-                  onValueChange={(value) => handleFormChange('parentCd', value === '_none_' ? '' : value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="상위메뉴 선택" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="_none_">없음 (최상위)</SelectItem>
-                    {parentMenuOptions.map((menu) => (
-                      <SelectItem key={menu.menuCd} value={menu.menuCd}>
-                        {menu.menuNm}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+        {/* 오른쪽: 상세 입력 영역 */}
+        <ResizablePanel defaultSize={50} minSize={30}>
+          <Card className="h-full border-0 rounded-none">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle>
+                  {isNewMode ? '메뉴 등록' : selectedMenu ? '메뉴 수정' : '메뉴 상세'}
+                </CardTitle>
+                <div className="flex gap-2">
+                  <Button size="sm" variant="outline" onClick={handleNewRootMenu}>
+                    <Plus className="h-4 w-4 mr-1 " />
+                    최상위
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={handleAddChildMenu} disabled={!selectedMenu}>
+                    <Plus className="h-4 w-4 mr-1 " />
+                    하위 추가
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={handleSave} disabled={!formData.menuCd}>
+                    <Save className="h-4 w-4 mr-1 text-green-500" />
+                    저장
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={handleDelete} disabled={!selectedMenu || isNewMode}>
+                    <Trash2 className="h-4 w-4 mr-1 text-red-500" />
+                    삭제
+                  </Button>
+                </div>
               </div>
+            </CardHeader>
+            <CardContent className="h-[calc(100%-60px)] pt-4 overflow-auto">
+              {(selectedMenu || isNewMode) ? (
+                <div className="grid grid-cols-2 gap-4">
+                  {/* 메뉴코드 */}
+                  <div className="space-y-2">
+                    <Label htmlFor="menuCd">메뉴코드 *</Label>
+                    <Input
+                      id="menuCd"
+                      value={formData.menuCd}
+                      onChange={(e) => handleFormChange('menuCd', e.target.value)}
+                      placeholder="메뉴코드 입력"
+                      disabled={!isNewMode}
+                    />
+                  </div>
 
-              {/* URL */}
-              <div className="space-y-2">
-                <Label htmlFor="menuLocation">URL</Label>
-                <Input
-                  id="menuLocation"
-                  value={formData.menuLocation || ''}
-                  onChange={(e) => handleFormChange('menuLocation', e.target.value)}
-                  placeholder="/view/example/page"
-                />
-              </div>
+                  {/* 메뉴명 */}
+                  <div className="space-y-2">
+                    <Label htmlFor="menuNm">메뉴명 *</Label>
+                    <Input
+                      id="menuNm"
+                      value={formData.menuNm}
+                      onChange={(e) => handleFormChange('menuNm', e.target.value)}
+                      placeholder="메뉴명 입력"
+                    />
+                  </div>
 
-              {/* 레벨 */}
-              <div className="space-y-2">
-                <Label htmlFor="level">레벨</Label>
-                <Input
-                  id="level"
-                  type="number"
-                  value={formData.level}
-                  onChange={(e) => handleFormChange('level', parseInt(e.target.value) || 0)}
-                />
-              </div>
+                  {/* 상위메뉴 */}
+                  <div className="space-y-2">
+                    <Label htmlFor="parentCd">상위메뉴</Label>
+                    <Select
+                      value={formData.parentCd || '_none_'}
+                      onValueChange={handleParentChange}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="상위메뉴 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="_none_">없음 (최상위)</SelectItem>
+                        {parentMenuOptions.map((menu) => (
+                          <SelectItem key={menu.menuCd} value={menu.menuCd}>
+                            {menu.menuNm}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-              {/* 정렬순서 */}
-              <div className="space-y-2">
-                <Label htmlFor="sortOrder">정렬순서</Label>
-                <Input
-                  id="sortOrder"
-                  type="number"
-                  value={formData.sortOrder}
-                  onChange={(e) => handleFormChange('sortOrder', parseInt(e.target.value) || 0)}
-                />
-              </div>
+                  {/* URL */}
+                  <div className="space-y-2">
+                    <Label htmlFor="menuLocation">URL</Label>
+                    <Input
+                      id="menuLocation"
+                      value={formData.menuLocation || ''}
+                      onChange={(e) => handleFormChange('menuLocation', e.target.value)}
+                      placeholder="/view/example/page"
+                    />
+                  </div>
 
-              {/* 아이콘 */}
-              <div className="space-y-2">
-                <Label htmlFor="icon">아이콘</Label>
-                <Input
-                  id="icon"
-                  value={formData.icon || ''}
-                  onChange={(e) => handleFormChange('icon', e.target.value)}
-                  placeholder="lucide 아이콘명 (예: Home, Settings)"
-                />
-              </div>
+                  {/* 레벨 (자동 계산, 읽기 전용) */}
+                  <div className="space-y-2">
+                    <Label htmlFor="level">레벨</Label>
+                    <Input
+                      id="level"
+                      type="number"
+                      value={formData.level}
+                      disabled
+                      className="bg-muted"
+                    />
+                  </div>
 
-              {/* 부모여부 */}
-              <div className="space-y-2">
-                <Label htmlFor="parentYn">부모메뉴 여부</Label>
-                <Select
-                  value={formData.parentYn || 'N'}
-                  onValueChange={(value) => handleFormChange('parentYn', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Y">예 (하위메뉴 있음)</SelectItem>
-                    <SelectItem value="N">아니오</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                  {/* 정렬순서 */}
+                  <div className="space-y-2">
+                    <Label htmlFor="sortOrder">정렬순서</Label>
+                    <Input
+                      id="sortOrder"
+                      type="number"
+                      value={formData.sortOrder}
+                      onChange={(e) => handleFormChange('sortOrder', parseInt(e.target.value) || 0)}
+                    />
+                  </div>
 
-              {/* 사용여부 */}
-              <div className="space-y-2">
-                <Label htmlFor="useYn">사용여부</Label>
-                <Select
-                  value={formData.useYn || 'Y'}
-                  onValueChange={(value) => handleFormChange('useYn', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Y">사용</SelectItem>
-                    <SelectItem value="N">미사용</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-              왼쪽 트리에서 메뉴를 선택하거나, 신규 버튼을 클릭하세요.
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                  {/* 아이콘 */}
+                  <div className="space-y-2">
+                    <Label htmlFor="icon">아이콘</Label>
+                    <Input
+                      id="icon"
+                      value={formData.icon || ''}
+                      onChange={(e) => handleFormChange('icon', e.target.value)}
+                      placeholder="lucide 아이콘명 (예: Home, Settings)"
+                    />
+                  </div>
+
+                  {/* 부모여부 */}
+                  <div className="space-y-2">
+                    <Label htmlFor="parentYn">부모메뉴 여부</Label>
+                    <Select
+                      value={formData.parentYn || 'N'}
+                      onValueChange={(value) => handleFormChange('parentYn', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Y">예 (하위메뉴 있음)</SelectItem>
+                        <SelectItem value="N">아니오</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* 사용여부 */}
+                  <div className="space-y-2">
+                    <Label htmlFor="useYn">사용여부</Label>
+                    <Select
+                      value={formData.useYn || 'Y'}
+                      onValueChange={(value) => handleFormChange('useYn', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Y">사용</SelectItem>
+                        <SelectItem value="N">미사용</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full text-muted-foreground">
+                  왼쪽 트리에서 메뉴를 선택하거나, 신규 버튼을 클릭하세요.
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </ResizablePanel>
+      </ResizablePanelGroup>
 
       {isLoading && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
