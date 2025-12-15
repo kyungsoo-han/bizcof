@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTabStore } from '@/stores/tabStore';
+import { useMenuStore } from '@/stores/menuStore';
 import {
   Home,
   Package,
@@ -52,10 +53,14 @@ function MenuItemComponent({ item }: { item: MenuItem }) {
   const location = useLocation();
   const navigate = useNavigate();
   const addTab = useTabStore((state) => state.addTab);
-  const [isOpen, setIsOpen] = useState(false);
+  const expandedMenus = useMenuStore((state) => state.expandedMenus);
+  const toggleMenu = useMenuStore((state) => state.toggleMenu);
+  const setExpanded = useMenuStore((state) => state.setExpanded);
+
   const hasChildren = item.children && item.children.length > 0;
   const Icon = getIcon(item.icon);
   const isActive = item.menuLocation ? location.pathname === item.menuLocation : false;
+  const isOpen = expandedMenus.includes(item.menuCd);
 
   const handleMenuClick = (e: React.MouseEvent, menuItem: MenuItem) => {
     if (!menuItem.menuLocation) return;
@@ -80,14 +85,14 @@ function MenuItemComponent({ item }: { item: MenuItem }) {
         (child) => child.menuLocation && location.pathname.startsWith(child.menuLocation)
       );
       if (hasActiveChild) {
-        setIsOpen(true);
+        setExpanded(item.menuCd, true);
       }
     }
-  }, [location.pathname, hasChildren, item.children]);
+  }, [location.pathname, hasChildren, item.children, item.menuCd, setExpanded]);
 
   if (hasChildren) {
     return (
-      <Collapsible open={isOpen} onOpenChange={setIsOpen} className="group/collapsible">
+      <Collapsible open={isOpen} onOpenChange={() => toggleMenu(item.menuCd)} className="group/collapsible">
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton
@@ -95,7 +100,7 @@ function MenuItemComponent({ item }: { item: MenuItem }) {
               className="cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
-                setIsOpen(!isOpen);
+                toggleMenu(item.menuCd);
               }}
             >
               <Icon className="h-4 w-4" />
@@ -145,7 +150,7 @@ function MenuItemComponent({ item }: { item: MenuItem }) {
 
 export function AppSidebar() {
   const { data: menuList = [], isLoading } = useQuery({
-    queryKey: ['menu-list'],
+    queryKey: ['menu-list-tree'],
     queryFn: async () => {
       const list = await menuApi.getMenuList();
       return menuApi.buildMenuTree(list);

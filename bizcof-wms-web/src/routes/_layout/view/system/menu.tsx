@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TreeGrid, type TreeGridRef } from '@/components/common/TreeGrid';
 import { col, hiddenCol, numCol } from '@/lib/grid-helpers';
-import { menuApi, type MenuItem } from '@/services/api/menu';
+import {menuApi, type MenuItem, type MenuUpdateRequest} from '@/services/api/menu';
 import { Plus, Trash2, Save, FolderTree, ChevronDown, ChevronRight } from 'lucide-react';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 
@@ -100,7 +100,10 @@ function MenuManage() {
   const parentMenuOptions = menus.filter(m => m.parentYn === 'Y' || !m.parentCd);
 
   // 저장 mutation
-  const saveMutation = useMutation({
+  const saveMutation = useMutation<string | MenuUpdateRequest,  // 반환 타입
+    Error,                        // 에러 타입
+    MenuItem                      // 입력 타입
+>({
     mutationFn: (data: MenuItem) => {
       if (isNewMode) {
         return menuApi.createMenu(data);
@@ -110,6 +113,7 @@ function MenuManage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['menu-list'] });
+      queryClient.invalidateQueries({ queryKey: ['menu-list-tree'] });
       alert(isNewMode ? '메뉴가 등록되었습니다.' : '메뉴가 수정되었습니다.');
       setIsNewMode(false);
     },
@@ -123,6 +127,7 @@ function MenuManage() {
     mutationFn: (menuCd: string) => menuApi.deleteMenu(menuCd),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['menu-list'] });
+      queryClient.invalidateQueries({ queryKey: ['menu-list-tree'] });
       alert('메뉴가 삭제되었습니다.');
       setSelectedMenu(null);
       setFormData(emptyFormData);

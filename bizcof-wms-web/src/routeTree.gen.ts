@@ -14,6 +14,7 @@ import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutViewSystemUserRouteImport } from './routes/_layout/view/system/user'
 import { Route as LayoutViewSystemMenuRouteImport } from './routes/_layout/view/system/menu'
+import { Route as LayoutViewSystemCmmonCodeRouteImport } from './routes/_layout/view/system/cmmonCode'
 import { Route as LayoutViewOutboundManageRouteImport } from './routes/_layout/view/outbound/manage'
 import { Route as LayoutViewOrderManageRouteImport } from './routes/_layout/view/order/manage'
 import { Route as LayoutViewMaterialInboundRouteImport } from './routes/_layout/view/material/inbound'
@@ -47,6 +48,12 @@ const LayoutViewSystemMenuRoute = LayoutViewSystemMenuRouteImport.update({
   path: '/view/system/menu',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutViewSystemCmmonCodeRoute =
+  LayoutViewSystemCmmonCodeRouteImport.update({
+    id: '/view/system/cmmonCode',
+    path: '/view/system/cmmonCode',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 const LayoutViewOutboundManageRoute =
   LayoutViewOutboundManageRouteImport.update({
     id: '/view/outbound/manage',
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/view/material/inbound': typeof LayoutViewMaterialInboundRoute
   '/view/order/manage': typeof LayoutViewOrderManageRoute
   '/view/outbound/manage': typeof LayoutViewOutboundManageRoute
+  '/view/system/cmmonCode': typeof LayoutViewSystemCmmonCodeRoute
   '/view/system/menu': typeof LayoutViewSystemMenuRoute
   '/view/system/user': typeof LayoutViewSystemUserRoute
   '/view/master/customer/list': typeof LayoutViewMasterCustomerListRoute
@@ -115,6 +123,7 @@ export interface FileRoutesByTo {
   '/view/material/inbound': typeof LayoutViewMaterialInboundRoute
   '/view/order/manage': typeof LayoutViewOrderManageRoute
   '/view/outbound/manage': typeof LayoutViewOutboundManageRoute
+  '/view/system/cmmonCode': typeof LayoutViewSystemCmmonCodeRoute
   '/view/system/menu': typeof LayoutViewSystemMenuRoute
   '/view/system/user': typeof LayoutViewSystemUserRoute
   '/view/master/customer/list': typeof LayoutViewMasterCustomerListRoute
@@ -131,6 +140,7 @@ export interface FileRoutesById {
   '/_layout/view/material/inbound': typeof LayoutViewMaterialInboundRoute
   '/_layout/view/order/manage': typeof LayoutViewOrderManageRoute
   '/_layout/view/outbound/manage': typeof LayoutViewOutboundManageRoute
+  '/_layout/view/system/cmmonCode': typeof LayoutViewSystemCmmonCodeRoute
   '/_layout/view/system/menu': typeof LayoutViewSystemMenuRoute
   '/_layout/view/system/user': typeof LayoutViewSystemUserRoute
   '/_layout/view/master/customer/list': typeof LayoutViewMasterCustomerListRoute
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/view/material/inbound'
     | '/view/order/manage'
     | '/view/outbound/manage'
+    | '/view/system/cmmonCode'
     | '/view/system/menu'
     | '/view/system/user'
     | '/view/master/customer/list'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/view/material/inbound'
     | '/view/order/manage'
     | '/view/outbound/manage'
+    | '/view/system/cmmonCode'
     | '/view/system/menu'
     | '/view/system/user'
     | '/view/master/customer/list'
@@ -176,6 +188,7 @@ export interface FileRouteTypes {
     | '/_layout/view/material/inbound'
     | '/_layout/view/order/manage'
     | '/_layout/view/outbound/manage'
+    | '/_layout/view/system/cmmonCode'
     | '/_layout/view/system/menu'
     | '/_layout/view/system/user'
     | '/_layout/view/master/customer/list'
@@ -222,6 +235,13 @@ declare module '@tanstack/react-router' {
       path: '/view/system/menu'
       fullPath: '/view/system/menu'
       preLoaderRoute: typeof LayoutViewSystemMenuRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/view/system/cmmonCode': {
+      id: '/_layout/view/system/cmmonCode'
+      path: '/view/system/cmmonCode'
+      fullPath: '/view/system/cmmonCode'
+      preLoaderRoute: typeof LayoutViewSystemCmmonCodeRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/view/outbound/manage': {
@@ -291,6 +311,7 @@ interface LayoutRouteChildren {
   LayoutViewMaterialInboundRoute: typeof LayoutViewMaterialInboundRoute
   LayoutViewOrderManageRoute: typeof LayoutViewOrderManageRoute
   LayoutViewOutboundManageRoute: typeof LayoutViewOutboundManageRoute
+  LayoutViewSystemCmmonCodeRoute: typeof LayoutViewSystemCmmonCodeRoute
   LayoutViewSystemMenuRoute: typeof LayoutViewSystemMenuRoute
   LayoutViewSystemUserRoute: typeof LayoutViewSystemUserRoute
   LayoutViewMasterCustomerListRoute: typeof LayoutViewMasterCustomerListRoute
@@ -305,6 +326,7 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutViewMaterialInboundRoute: LayoutViewMaterialInboundRoute,
   LayoutViewOrderManageRoute: LayoutViewOrderManageRoute,
   LayoutViewOutboundManageRoute: LayoutViewOutboundManageRoute,
+  LayoutViewSystemCmmonCodeRoute: LayoutViewSystemCmmonCodeRoute,
   LayoutViewSystemMenuRoute: LayoutViewSystemMenuRoute,
   LayoutViewSystemUserRoute: LayoutViewSystemUserRoute,
   LayoutViewMasterCustomerListRoute: LayoutViewMasterCustomerListRoute,

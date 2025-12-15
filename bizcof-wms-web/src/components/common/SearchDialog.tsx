@@ -194,7 +194,7 @@ export function SearchDialog<T extends { id: number | string }>({
         <div className="px-6 pt-6 flex-shrink-0">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            {description && <DialogDescription>{description}</DialogDescription>}
+            <DialogDescription>{description || '검색어를 입력하고 항목을 선택하세요.'}</DialogDescription>
           </DialogHeader>
         </div>
 
@@ -216,13 +216,13 @@ export function SearchDialog<T extends { id: number | string }>({
           </div>
 
           {/* 그리드 */}
-          <div className="flex-1 border rounded-md overflow-hidden min-h-0">
+          <div className="border rounded-md overflow-hidden">
             {open && (
               <DataGrid
                 ref={gridRef}
                 columns={columns}
                 data={items}
-                className="h-full"
+                className="h-[400px]"
                 showToolbar={false}
                 onRowClick={handleRowClick}
                 onRowDoubleClick={handleRowDoubleClick}

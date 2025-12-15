@@ -20,7 +20,7 @@ import static com.bizcof.wms.outbound.domain.QOutboundDetail.outboundDetail;
 import static com.bizcof.wms.outbound.domain.QOutboundHeader.outboundHeader;
 import static com.bizcof.wms.master.domain.QCustomer.customer;
 import static com.bizcof.wms.master.domain.QItem.item;
-import static com.bizcof.wms.system.domain.QCommonCode.commonCode1;
+import static com.bizcof.wms.system.domain.QCommonCode.commonCode;
 
 @Slf4j
 @Repository
@@ -47,14 +47,14 @@ public class OutboundQueryRepository extends QueryDslSupport {
                                 customer.code.as("customerCode"),
                                 customer.name.as("customerName"),
                                 outboundHeader.outboundType,
-                                commonCode1.commonName.as("outboundTypeName"),
+                                commonCode.name.as("outboundTypeName"),
                                 outboundHeader.memo
                         ))
                 .from(outboundHeader)
                 .leftJoin(customer)
                 .on(outboundHeader.customerId.eq(customer.id))
-                .leftJoin(commonCode1)
-                .on(outboundHeader.outboundType.eq(commonCode1.commonCode).and(commonCode1.groupCode.eq("OUTBOUND_TYPE")))
+                .leftJoin(commonCode)
+                .on(outboundHeader.outboundType.eq(commonCode.code).and(commonCode.groupCode.eq("OUTBOUND_TYPE")))
                 .where(builder)
                 .orderBy(outboundHeader.outboundNo.asc().nullsLast())
                 .fetch();

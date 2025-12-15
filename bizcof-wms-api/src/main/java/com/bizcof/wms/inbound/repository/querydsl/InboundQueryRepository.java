@@ -21,7 +21,7 @@ import static com.bizcof.wms.inbound.domain.QInboundDetail.inboundDetail;
 import static com.bizcof.wms.inbound.domain.QInboundHeader.inboundHeader;
 import static com.bizcof.wms.master.domain.QCustomer.customer;
 import static com.bizcof.wms.master.domain.QItem.item;
-import static com.bizcof.wms.system.domain.QCommonCode.commonCode1;
+import static com.bizcof.wms.system.domain.QCommonCode.commonCode;
 
 @Slf4j
 @Repository
@@ -48,14 +48,14 @@ public class InboundQueryRepository extends QueryDslSupport {
                                 customer.code.as("customerCode"),
                                 customer.name.as("customerName"),
                                 inboundHeader.inboundType,
-                                commonCode1.commonName.as("inboundTypeName"),
+                                commonCode.name.as("inboundTypeName"),
                                 inboundHeader.memo
                         ))
                 .from(inboundHeader)
                 .leftJoin(customer)
                 .on(inboundHeader.customerId.eq(customer.id))
-                .leftJoin(commonCode1)
-                .on(inboundHeader.inboundType.eq(commonCode1.commonCode).and(commonCode1.groupCode.eq("INBOUND_TYPE")))
+                .leftJoin(commonCode)
+                .on(inboundHeader.inboundType.eq(commonCode.code).and(commonCode.groupCode.eq("INBOUND_TYPE")))
                 .where(builder)
                 .orderBy(inboundHeader.inboundNo.asc().nullsLast())
                 .fetch();
@@ -72,14 +72,14 @@ public class InboundQueryRepository extends QueryDslSupport {
                                 customer.code.as("customerCode"),
                                 customer.name.as("customerName"),
                                 inboundHeader.inboundType,
-                                commonCode1.commonName.as("inboundTypeName"),
+                                commonCode.name.as("inboundTypeName"),
                                 inboundHeader.memo
                         ))
                 .from(inboundHeader)
                 .leftJoin(customer)
                 .on(inboundHeader.customerId.eq(customer.id))
-                .leftJoin(commonCode1)
-                .on(inboundHeader.inboundType.eq(commonCode1.commonCode).and(commonCode1.groupCode.eq("INBOUND_TYPE")))
+                .leftJoin(commonCode)
+                .on(inboundHeader.inboundType.eq(commonCode.code).and(commonCode.groupCode.eq("INBOUND_TYPE")))
                 .where(eq(inboundHeader.inboundNo, inboundNo))
                 .fetchOne();
     }
