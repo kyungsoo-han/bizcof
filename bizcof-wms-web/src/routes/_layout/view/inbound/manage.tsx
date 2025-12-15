@@ -10,6 +10,7 @@ import { inboundApi, type InboundSearchRequest, type Inbound } from '@/services/
 import { InboundFormDialog } from '@/components/inbound/InboundFormDialog';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { format, subDays } from 'date-fns';
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable.tsx";
 
 // 기본 날짜 범위 (최근 7일)
 const getDefaultDateRange = () => {
@@ -123,7 +124,7 @@ function InboundManage() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4 h-[calc(100vh-220px)]">
       {/* 검색 영역 */}
       <SearchForm
         fields={searchFields}
@@ -131,8 +132,10 @@ function InboundManage() {
         onReset={handleReset}
       />
 
+      <ResizablePanelGroup direction="vertical" className="flex-1 rounded-lg border">
+        <ResizablePanel defaultSize={50} minSize={25} maxSize={75}>
       {/* 마스터 그리드 영역 */}
-      <Card>
+      <Card className="h-full border-0 rounded-none">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -180,9 +183,9 @@ function InboundManage() {
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="h-[calc(100%-60px)]">
           {errorMaster ? (
-            <div className="flex items-center justify-center h-64 text-muted-foreground">
+            <div className="flex items-center justify-center h-full text-muted-foreground">
               백엔드 API가 구현되지 않았습니다
             </div>
           ) : (
@@ -190,15 +193,18 @@ function InboundManage() {
               ref={masterGridRef}
               columns={masterColumns}
               data={inbounds || []}
-              className="h-[350px]"
+              className="h-full"
               onFocusedRowChanged={handleMasterRowClick}
             />
           )}
         </CardContent>
       </Card>
+        </ResizablePanel>
 
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={50} minSize={25} maxSize={75}>
       {/* 상세 그리드 영역 */}
-      <Card>
+      <Card className="h-full border-0 rounded-none">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -206,13 +212,13 @@ function InboundManage() {
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="h-[calc(100%-50px)]">
           {errorDetail ? (
-            <div className="flex items-center justify-center h-64 text-muted-foreground">
+            <div className="flex items-center justify-center h-full text-muted-foreground">
               백엔드 API가 구현되지 않았습니다
             </div>
           ) : isLoadingDetail ? (
-            <div className="flex items-center justify-center h-64 text-muted-foreground">
+            <div className="flex items-center justify-center h-full text-muted-foreground">
               <div className="flex flex-col items-center gap-2">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 <p>상세 정보를 불러오는 중...</p>
@@ -223,15 +229,17 @@ function InboundManage() {
               ref={detailGridRef}
               columns={detailColumns}
               data={inboundDetails || []}
-              className="h-[500px]"
+              className="h-full"
             />
           ) : (
-            <div className="flex items-center justify-center h-64 text-muted-foreground">
+            <div className="flex items-center justify-center h-full text-muted-foreground">
               입고 건을 선택하세요
             </div>
           )}
         </CardContent>
       </Card>
+        </ResizablePanel>
+      </ResizablePanelGroup>
 
       {isLoadingMaster && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">

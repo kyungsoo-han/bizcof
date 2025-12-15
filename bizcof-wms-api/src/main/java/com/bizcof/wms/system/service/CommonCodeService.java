@@ -30,7 +30,7 @@ public class CommonCodeService {
         }
 
         // DB 조회 + Redis 저장
-        List<CommonCodeResponse> codes = commonCodeQueryRepository.findCodes(groupCode);
+        List<CommonCodeResponse> codes = commonCodeQueryRepository.findByGroupCode(groupCode);
         redisTemplate.opsForValue().set(redisKey, codes, 6, TimeUnit.HOURS); // TTL 6시간
 
         return codes;

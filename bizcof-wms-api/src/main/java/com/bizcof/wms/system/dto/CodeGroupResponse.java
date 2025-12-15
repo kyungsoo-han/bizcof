@@ -10,8 +10,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Schema(description = "공통코드 응답 DTO")
-public class CommonCodeResponse implements Serializable {
+@Schema(description = "코드 그룹 응답 DTO")
+public class CodeGroupResponse implements Serializable {
 
     @Schema(description = "ID")
     private Long id;
@@ -19,26 +19,11 @@ public class CommonCodeResponse implements Serializable {
     @Schema(description = "그룹 코드", example = "INBOUND_TYPE")
     private String groupCode;
 
-    @Schema(description = "코드", example = "NORMAL")
-    private String code;
-
-    @Schema(description = "코드명", example = "정상 입고")
+    @Schema(description = "그룹명", example = "입고 타입")
     private String name;
-
-    @Schema(description = "코드 영문명", example = "Normal Inbound")
-    private String engName;
 
     @Schema(description = "설명")
     private String description;
-
-    @Schema(description = "속성1")
-    private String attr1;
-
-    @Schema(description = "속성2")
-    private String attr2;
-
-    @Schema(description = "속성3")
-    private String attr3;
 
     @Schema(description = "사용여부", example = "Y")
     private String useYn;

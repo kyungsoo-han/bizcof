@@ -7,51 +7,31 @@ import org.hibernate.annotations.Comment;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "t_common_code", schema = "bizcof",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"group_code", "code"}))
+@Table(name = "t_code_group", schema = "bizcof",
+    uniqueConstraints = @UniqueConstraint(columnNames = "group_code"))
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommonCode {
+public class CodeGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("ID")
     private Long id;
 
-    @Column(name = "group_code", length = 20, nullable = false)
+    @Column(name = "group_code", length = 20, nullable = false, unique = true)
     @Comment("그룹 코드")
     private String groupCode;
 
-    @Column(name = "code", length = 20, nullable = false)
-    @Comment("코드")
-    private String code;
-
     @Column(name = "name", length = 100, nullable = false)
-    @Comment("코드명")
+    @Comment("그룹명")
     private String name;
-
-    @Column(name = "eng_name", length = 100)
-    @Comment("코드 영문명")
-    private String engName;
 
     @Column(name = "description", length = 500)
     @Comment("설명")
     private String description;
-
-    @Column(name = "attr1", length = 100)
-    @Comment("속성1")
-    private String attr1;
-
-    @Column(name = "attr2", length = 100)
-    @Comment("속성2")
-    private String attr2;
-
-    @Column(name = "attr3", length = 100)
-    @Comment("속성3")
-    private String attr3;
 
     @Column(name = "use_yn", columnDefinition = "char(1) default 'Y'", nullable = false)
     @Comment("사용여부")
@@ -78,10 +58,6 @@ public class CommonCode {
     @Column(name = "modified_dt")
     @Comment("수정일시")
     private LocalDateTime modifiedDt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_code", referencedColumnName = "group_code", insertable = false, updatable = false)
-    private CodeGroup codeGroup;
 
     @PrePersist
     public void prePersist() {
