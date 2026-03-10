@@ -19,10 +19,10 @@
 
 ## 🌐 URL
 - **운영 사이트:**  
-  [https://wms.bizcof.com](https://wms.bizcof.com)
+  ~~[https://wms.bizcof.com](https://wms.bizcof.com)~~
 
 - **백엔드 (API 서버 - Swagger 문서):**  
-  [https://wms.bizcof.com/swagger-ui/index.html](https://wms.bizcof.com/swagger-ui/index.html)
+  ~~[https://wms.bizcof.com/swagger-ui/index.html](https://wms.bizcof.com/swagger-ui/index.html)~~
 
 ---
 
